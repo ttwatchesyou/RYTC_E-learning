@@ -1,9 +1,9 @@
 import type { AppProps } from "next/app";
 import { ConfigProvider } from "antd";
 import thTH from "antd/locale/th_TH";
-import theme from "@/config/theme";
-import "antd/dist/reset.css";
-import "@/styles/globals.css";
+import theme from "../config/theme"; // 
+// หากมีไฟล์ globals.css อยู่ในโฟลเดอร์ src/styles ให้ใช้บรรทัดล่างนี้ (ถ้าไม่มีให้ลบออก)
+
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

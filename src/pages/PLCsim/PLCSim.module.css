@@ -1,0 +1,3346 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Prompt:wght@300;400;500;600;700&display=swap");
+
+.brandPage,
+.appShell {
+  min-height: 100vh;
+  background: #f5f7f9;
+  color: #13211e;
+  font-family: "Prompt", sans-serif;
+}
+.brandHeader,
+.appHeader {
+  height: 72px;
+  padding: 0 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #dfe5e3;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+}
+.logoMark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: -0.5px;
+}
+.logoMark > svg {
+  font-size: 26px;
+  color: #0a9275;
+}
+.logoMark span span {
+  color: #0a9275;
+}
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.headerActions button,
+.iconButton {
+  border: 0;
+  background: transparent;
+  color: #52605c;
+  font: 500 13px "Prompt";
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #153c34;
+  color: white;
+  display: grid;
+  place-items: center;
+  font: 600 12px "IBM Plex Mono";
+}
+.brandMain {
+  width: min(1040px, 92vw);
+  margin: auto;
+  text-align: center;
+  padding: 70px 0 44px;
+}
+.eyebrow {
+  font: 600 11px "IBM Plex Mono";
+  letter-spacing: 2.5px;
+  color: #0a9275;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow span {
+  width: 24px;
+  height: 1px;
+  background: #0a9275;
+}
+.brandMain h1 {
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -2.5px;
+  margin: 20px 0 18px;
+}
+.brandMain h1 em {
+  font-style: normal;
+  color: #0a9275;
+}
+.lead {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #687570;
+  font-weight: 300;
+}
+.searchBox {
+  width: min(460px, 100%);
+  height: 48px;
+  margin: 31px auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 15px;
+  background: #fff;
+  border: 1px solid #dbe3e0;
+  border-radius: 9px;
+  box-shadow: 0 7px 20px rgba(33, 54, 48, 0.05);
+  color: #84918d;
+}
+.searchBox input {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  font: 400 13px "Prompt";
+  color: #21342e;
+}
+.brandGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  text-align: left;
+}
+.brandCard {
+  height: 118px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #dde5e2;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: 0.2s;
+  text-align: left;
+}
+.brandCard:hover {
+  transform: translateY(-3px);
+  border-color: #0a9275;
+  box-shadow: 0 10px 30px rgba(25, 70, 59, 0.1);
+}
+.brandBadge {
+  width: 46px;
+  height: 46px;
+  border: 1px solid;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font: 700 13px "IBM Plex Mono";
+  margin-right: 12px;
+}
+.brandInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.brandInfo strong {
+  font-size: 14px;
+}
+.brandInfo small {
+  font-size: 10px;
+  color: #83908c;
+  margin-top: 4px;
+}
+.cardArrow {
+  position: absolute;
+  right: 13px;
+  top: 13px;
+  color: #b6c0bd;
+  transition: 0.2s;
+}
+.brandCard:hover .cardArrow {
+  color: #0a9275;
+  transform: translateX(2px);
+}
+.standardNote {
+  margin-top: 26px;
+  color: #89948f;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.appShell {
+  height: 100vh;
+  overflow: hidden;
+  background: #edf1f0;
+}
+.appHeader {
+  height: 64px;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+}
+.appBrand,
+.appActions,
+.selectedBrand {
+  display: flex;
+  align-items: center;
+}
+.appBrand {
+  gap: 12px;
+}
+.appBrand > .iconButton {
+  font-size: 18px;
+  padding: 8px;
+  border-right: 1px solid #e1e6e4;
+}
+.projectTitle {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.projectTitle input {
+  border: 0;
+  background: transparent;
+  text-align: center;
+  font: 600 13px "Prompt";
+  outline: 0;
+  color: #20332e;
+}
+.projectTitle span {
+  font-size: 9px;
+  color: #0a9275;
+}
+.appActions {
+  justify-content: flex-end;
+  gap: 10px;
+}
+.selectedBrand {
+  padding: 5px 10px;
+  border-right: 1px solid #e3e7e6;
+  gap: 8px;
+}
+.selectedBrand > span {
+  font: 700 11px "IBM Plex Mono";
+  width: 28px;
+}
+.selectedBrand div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.selectedBrand b {
+  font-size: 10px;
+}
+.selectedBrand small {
+  font-size: 8px;
+  color: #7d8885;
+}
+.selectedBrand svg {
+  font-size: 11px;
+  color: #96a09d;
+}
+.appActions > .iconButton {
+  font-size: 17px;
+  padding: 8px;
+}
+.runButton {
+  border: 0;
+  border-radius: 6px;
+  background: #087d65;
+  color: white;
+  height: 34px;
+  padding: 0 15px;
+  font: 600 11px "IBM Plex Mono";
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+.modeNav {
+  height: 46px;
+  background: #fff;
+  border-bottom: 1px solid #dce3e0;
+  display: flex;
+  padding-left: 64px;
+  align-items: stretch;
+}
+.modeNav button {
+  padding: 0 18px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #72807c;
+  font: 500 11px "Prompt";
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+.modeNav button svg {
+  font-size: 16px;
+}
+.modeNav button span {
+  font: 600 8px "IBM Plex Mono";
+  padding: 2px 4px;
+  border-radius: 3px;
+  background: #eef1f0;
+}
+.modeNav .activeMode {
+  color: #087d65;
+  border-color: #087d65;
+  background: #f7fbfa;
+}
+.statusLine {
+  margin-left: auto;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #8b9693;
+  font: 600 9px "IBM Plex Mono";
+}
+.statusLine i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #aeb8b5;
+}
+.statusLine i.online {
+  background: #18b890;
+  box-shadow: 0 0 0 4px rgba(24, 184, 144, 0.12);
+}
+
+.workspace {
+  height: calc(100vh - 110px);
+  display: grid;
+  grid-template-columns: 222px minmax(460px, 1fr) 220px;
+}
+.toolbox,
+.monitorPanel,
+.hmiTools {
+  background: #fafcfb;
+  border-right: 1px solid #d9e0de;
+  padding: 18px 13px;
+  overflow: auto;
+}
+.monitorPanel {
+  border-left: 1px solid #d9e0de;
+  border-right: 0;
+}
+.panelHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e4e9e7;
+  padding: 0 3px 12px;
+}
+.panelHeading span {
+  font: 600 10px "IBM Plex Mono";
+  letter-spacing: 1px;
+  color: #31443e;
+}
+.panelHeading small {
+  font-size: 9px;
+  color: #99a39f;
+}
+.toolList {
+  padding-top: 10px;
+}
+.toolList > button {
+  width: 100%;
+  height: 59px;
+  background: #fff;
+  border: 1px solid #e0e6e4;
+  border-radius: 6px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  padding: 8px;
+  gap: 9px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.toolList > button:hover {
+  border-color: #0a9275;
+  background: #f7fcfa;
+}
+.toolList code {
+  width: 66px;
+  text-align: center;
+  color: #173e34;
+  font: 600 13px "IBM Plex Mono";
+}
+.toolList button span {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #e8eceb;
+  padding-left: 9px;
+}
+.toolList b {
+  font-size: 10px;
+  color: #344640;
+}
+.toolList small {
+  font-size: 8px;
+  color: #9aa39f;
+  margin-top: 3px;
+}
+.tip {
+  margin-top: 14px;
+  padding: 12px;
+  background: #eaf6f2;
+  border: 1px solid #d3eae2;
+  border-radius: 7px;
+  color: #087d65;
+  display: flex;
+  gap: 8px;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.tip svg {
+  font-size: 16px;
+  flex: none;
+}
+.tip span {
+  display: flex;
+  flex-direction: column;
+  color: #60706b;
+}
+.tip b {
+  color: #087d65;
+  font-size: 10px;
+}
+.editorArea,
+.hmiEditor {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.editorToolbar {
+  height: 45px;
+  padding: 0 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8faf9;
+  border-bottom: 1px solid #dbe2df;
+  font-size: 10px;
+  color: #8a9591;
+}
+.editorToolbar b {
+  font-size: 11px;
+  color: #31413d;
+}
+.editorToolbar button {
+  border: 0;
+  background: transparent;
+  color: #6d7a76;
+  padding: 6px 8px;
+  font: 500 10px "Prompt";
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.ladderCanvas {
+  position: relative;
+  flex: 1;
+  overflow: auto;
+  padding: 38px 38px 80px 45px;
+  background-color: #fff;
+  background-image: radial-gradient(#d9e0de 0.65px, transparent 0.65px);
+  background-size: 18px 18px;
+}
+.ladderCanvas:before,
+.ladderCanvas:after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: 25px;
+  width: 3px;
+  background: #24433b;
+}
+.ladderCanvas:before {
+  left: 36px;
+}
+.ladderCanvas:after {
+  right: 28px;
+}
+.railLabels {
+  position: absolute;
+  top: 7px;
+  left: 31px;
+  right: 23px;
+  display: flex;
+  justify-content: space-between;
+  font: 600 9px "IBM Plex Mono";
+  color: #658078;
+}
+.rung {
+  height: 112px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+.selectedRung {
+  background: rgba(10, 146, 117, 0.035);
+  outline: 1px dashed rgba(10, 146, 117, 0.28);
+}
+.rungNumber {
+  position: absolute;
+  left: -32px;
+  top: 9px;
+  color: #a5afac;
+  font: 500 8px "IBM Plex Mono";
+}
+.rungWire {
+  height: 2px;
+  background: #29463e;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 22px;
+  position: relative;
+}
+.emptyRung {
+  margin: auto;
+  background: #fff;
+  border: 1px dashed #cbd5d1;
+  color: #9aa6a2;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-size: 9px;
+}
+.ladderElement {
+  position: relative;
+  min-width: 82px;
+  height: 62px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.ladderElement:before,
+.ladderElement:after {
+  content: "";
+  height: 2px;
+  width: 12px;
+  background: #29463e;
+  position: absolute;
+  top: 30px;
+}
+.ladderElement:before {
+  left: -12px;
+}
+.ladderElement:after {
+  right: -12px;
+}
+.ladderElement code {
+  font: 600 15px "IBM Plex Mono";
+  color: #173b32;
+}
+.ladderElement .address {
+  font: 600 9px "IBM Plex Mono";
+  color: #0a9275;
+}
+.elementLabel {
+  font-size: 8px;
+  color: #788681;
+}
+.ladderElement > button {
+  opacity: 0;
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  border: 0;
+  background: #fee;
+  color: #d54444;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.ladderElement:hover > button {
+  opacity: 1;
+}
+.ladderElement.energized code {
+  color: #02a980;
+  text-shadow: 0 0 7px rgba(2, 169, 128, 0.3);
+}
+.ladderElement.energized:before,
+.ladderElement.energized:after {
+  background: #02a980;
+  box-shadow: 0 0 5px rgba(2, 169, 128, 0.5);
+}
+.addRung {
+  position: relative;
+  z-index: 2;
+  margin-top: 18px;
+  border: 1px dashed #b8c5c1;
+  background: #fff;
+  color: #71807b;
+  border-radius: 5px;
+  padding: 8px 16px;
+  font: 500 10px "Prompt";
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.monitorPanel > p {
+  font-size: 9px;
+  color: #8b9692;
+  line-height: 1.6;
+  padding: 12px 3px;
+}
+.ioList button {
+  width: 100%;
+  height: 52px;
+  border: 1px solid #e1e6e4;
+  background: #fff;
+  border-radius: 6px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  text-align: left;
+}
+.ioList button:not(:disabled) {
+  cursor: pointer;
+}
+.ioDot {
+  width: 8px;
+  height: 8px;
+  background: #c6cfcc;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #f0f3f2;
+}
+.ioList button > span:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+}
+.ioList b {
+  font: 600 10px "IBM Plex Mono";
+}
+.ioList small {
+  font-size: 8px;
+  color: #98a29f;
+}
+.ioList em {
+  margin-left: auto;
+  font: 600 8px "IBM Plex Mono";
+  font-style: normal;
+  color: #9aa4a1;
+}
+.ioList button.ioOn {
+  border-color: #a5dbc9;
+  background: #f5fcfa;
+}
+.ioList .ioOn .ioDot {
+  background: #11ae85;
+  box-shadow: 0 0 0 3px #d9f3eb;
+}
+.ioList .ioOn em {
+  color: #07946f;
+}
+
+.hmiWorkspace {
+  height: calc(100vh - 110px);
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+.hmiTools {
+  border-right: 1px solid #d9e0de;
+}
+.widgetGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.widgetGrid button {
+  height: 88px;
+  border: 1px solid #dfe5e3;
+  border-radius: 7px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.widgetGrid button:hover {
+  border-color: #0a9275;
+}
+.widgetGrid b {
+  font-size: 9px;
+  color: #52615c;
+}
+.miniButton {
+  background: #0a9275;
+  color: #fff;
+  border-radius: 3px;
+  padding: 5px 9px;
+  font: 600 7px "IBM Plex Mono";
+}
+.miniLamp {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #19ba8f;
+  box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.18), 0 0 0 4px #daf4ed;
+}
+.miniGauge {
+  width: 35px;
+  height: 25px;
+  border-radius: 35px 35px 0 0;
+  border: 4px solid #16a37e;
+  border-bottom: 0;
+  font: 600 7px "IBM Plex Mono";
+  display: grid;
+  place-items: center;
+}
+.miniText {
+  font: 600 22px Georgia;
+  color: #28453d;
+}
+.hmiEditor {
+  background: #dfe4e3;
+}
+.zoom {
+  font: 600 9px "IBM Plex Mono";
+  background: white;
+  border: 1px solid #dde3e1;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.screenFrame {
+  width: min(850px, 88%);
+  aspect-ratio: 16/9;
+  margin: auto;
+  background: #172321;
+  border: 10px solid #303d3a;
+  border-radius: 14px;
+  box-shadow: 0 20px 45px rgba(21, 39, 34, 0.2);
+  overflow: hidden;
+}
+.screenTop {
+  height: 46px;
+  background: #21332f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 19px;
+  font: 600 9px "IBM Plex Mono";
+}
+.screenTop div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.screenTop svg {
+  color: #15b58a;
+  font-size: 17px;
+}
+.screenTop span {
+  color: #8ca099;
+  font-size: 7px;
+}
+.screenGrid {
+  height: calc(100% - 46px);
+  padding: 26px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(90px, 1fr);
+  gap: 15px;
+  background-color: #edf3f1;
+  background-image: linear-gradient(
+      rgba(26, 76, 63, 0.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(26, 76, 63, 0.045) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.hmiWidget,
+.hmiPush,
+.hmiLabel {
+  border: 1px solid #d4dfdb;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.hmiWidget b {
+  font-size: 9px;
+  margin-top: 8px;
+}
+.hmiWidget small,
+.hmiPush small {
+  font: 500 7px "IBM Plex Mono";
+  color: #82908b;
+}
+.bigLamp {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #70807b;
+  border: 5px solid #dce3e1;
+  box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.5);
+}
+.bigLampOn {
+  background: #13d69e;
+  box-shadow: 0 0 17px #36dfae, inset 0 0 5px white;
+}
+.gauge {
+  width: 70px;
+  height: 38px;
+  border: 8px solid #cbd7d3;
+  border-bottom: 0;
+  border-radius: 70px 70px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.gauge span {
+  font: 600 11px "IBM Plex Mono";
+  transform: translateY(8px);
+}
+.hmiPush {
+  border: 0;
+  background: #fff;
+  box-shadow: 0 3px 0 #c8d3cf;
+  cursor: pointer;
+}
+.hmiPush > span {
+  padding: 8px 24px;
+  border-radius: 5px;
+  background: #0a9275;
+  color: #fff;
+  font: 600 10px "IBM Plex Mono";
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+}
+.hmiPushOn > span {
+  background: #e49b29;
+  transform: translateY(2px);
+}
+.hmiLabel {
+  grid-column: span 2;
+  align-items: flex-start;
+  padding: 0 18px;
+  font: 600 18px "IBM Plex Mono";
+  letter-spacing: 2px;
+  color: #214038;
+}
+.hmiLabel button {
+  position: absolute;
+  right: 7px;
+  top: 5px;
+  border: 0;
+  background: transparent;
+  color: #98a6a1;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .brandGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .workspace {
+    grid-template-columns: 185px 1fr;
+  }
+  .monitorPanel {
+    display: none;
+  }
+  .appHeader {
+    grid-template-columns: 1fr 1fr;
+  }
+  .projectTitle {
+    display: none;
+  }
+  .selectedBrand div,
+  .appActions > .iconButton {
+    display: none;
+  }
+  .ladderCanvas {
+    padding-right: 30px;
+  }
+  .hmiWorkspace {
+    grid-template-columns: 190px 1fr;
+  }
+}
+@media (max-width: 620px) {
+  .brandHeader {
+    padding: 0 18px;
+  }
+  .headerActions button {
+    display: none;
+  }
+  .brandMain {
+    padding-top: 40px;
+  }
+  .brandGrid {
+    grid-template-columns: 1fr;
+  }
+  .brandCard {
+    height: 88px;
+  }
+  .desktopOnly {
+    display: none;
+  }
+  .appHeader {
+    padding: 0 8px;
+  }
+  .selectedBrand {
+    display: none;
+  }
+  .modeNav {
+    padding-left: 4px;
+  }
+  .statusLine {
+    display: none;
+  }
+  .workspace,
+  .hmiWorkspace {
+    grid-template-columns: 1fr;
+  }
+  .toolbox,
+  .hmiTools {
+    height: 118px;
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    overflow-x: auto;
+  }
+  .toolbox .panelHeading,
+  .toolbox .tip,
+  .hmiTools .panelHeading,
+  .hmiTools .tip {
+    display: none;
+  }
+  .toolList {
+    display: flex;
+    padding: 0;
+    gap: 7px;
+  }
+  .toolList > button {
+    width: 145px;
+    min-width: 145px;
+    margin: 0;
+  }
+  .editorArea {
+    height: calc(100vh - 228px);
+  }
+  .hmiTools {
+    height: 108px;
+  }
+  .widgetGrid {
+    display: flex;
+    margin: 0;
+  }
+  .widgetGrid button {
+    width: 90px;
+    min-width: 90px;
+    height: 88px;
+  }
+  .hmiEditor {
+    height: calc(100vh - 218px);
+  }
+  .screenFrame {
+    width: 94%;
+    border-width: 6px;
+  }
+  .screenGrid {
+    padding: 10px;
+    gap: 7px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hmiLabel {
+    grid-column: span 2;
+  }
+  .appBrand .logoMark {
+    display: none;
+  }
+}
+
+/* Direct input simulation from ladder contacts */
+.ladderElement.clickableInput {
+  cursor: pointer;
+}
+.ladderElement.clickableInput:hover {
+  border-color: #1c9a67;
+  background: #effbf6;
+}
+.ladderElement.inputForcedOn {
+  border-color: #24ad77;
+  background: #edfbf5;
+}
+.inputState {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  padding: 1px 3px;
+  border-radius: 2px;
+  background: #e9eef2;
+  color: #788894;
+  font: 700 6px "IBM Plex Mono";
+  font-style: normal;
+}
+.inputForcedOn .inputState {
+  background: #21a871;
+  color: #fff;
+}
+.forceInputButton {
+  width: 100%;
+  height: 34px;
+  margin: -2px 0 13px;
+  border: 1px solid #cbd7df;
+  border-radius: 5px;
+  background: #f6f8fa;
+  color: #60727f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font: 700 8px "IBM Plex Mono";
+  cursor: pointer;
+}
+.forceInputButton > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #aeb9c1;
+}
+.forceInputButton.forceOn {
+  border-color: #55c495;
+  background: #eaf9f2;
+  color: #08794f;
+}
+.forceInputButton.forceOn > span {
+  background: #1bb675;
+  box-shadow: 0 0 0 3px rgba(27, 182, 117, 0.15);
+}
+
+/* Live timer countdown */
+.timerCountdown {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  min-width: 29px;
+  padding: 2px 3px;
+  border: 1px solid #b9c9d5;
+  border-radius: 3px;
+  background: #102a3e;
+  color: #65dbff;
+  text-align: right;
+  font: 600 6px "IBM Plex Mono";
+}
+.timerCountdown b {
+  margin-right: 1px;
+  font-size: 7px;
+}
+.timerCountdown.timerDone {
+  border-color: #41bc89;
+  background: #08734e;
+  color: #fff;
+}
+.timerSettings {
+  margin-bottom: 13px;
+  padding: 10px;
+  border: 1px solid #cedce7;
+  border-radius: 6px;
+  background: #f2f7fa;
+}
+.timerSettings > label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+  color: #607286;
+  font-size: 9px;
+  font-weight: 600;
+}
+.timerMonitor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.timerMonitor > span {
+  display: flex;
+  flex-direction: column;
+}
+.timerMonitor small {
+  color: #778b9b;
+  font-size: 7px;
+}
+.timerMonitor b {
+  color: #0e557f;
+  font: 700 15px "IBM Plex Mono";
+}
+.timerMonitor em {
+  padding: 3px 5px;
+  border-radius: 3px;
+  background: #dfe8ee;
+  color: #617785;
+  font: 700 7px "IBM Plex Mono";
+  font-style: normal;
+}
+.timerProgress {
+  height: 5px;
+  margin: 8px 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #d5e0e7;
+}
+.timerProgress i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #0e5d98, #21b77a);
+  transition: width 0.1s linear;
+}
+.timerSettings > button {
+  width: 100%;
+  height: 29px;
+  border: 1px solid #c5d4df;
+  border-radius: 4px;
+  background: #fff;
+  color: #42647d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font: 600 8px "Prompt";
+  cursor: pointer;
+}
+
+.timerElement .timerCountdown {
+  right: 2px;
+  bottom: -8px;
+  z-index: 3;
+}
+.timerElement .elementLabel {
+  transform: translateY(-3px);
+}
+.counterValue {
+  position: absolute;
+  right: 2px;
+  bottom: -8px;
+  z-index: 3;
+  min-width: 32px;
+  padding: 2px 3px;
+  border: 1px solid #b9c9d5;
+  border-radius: 3px;
+  background: #102a3e;
+  color: #65dbff;
+  text-align: center;
+  font: 600 6px "IBM Plex Mono";
+}
+.counterValue b {
+  font-size: 7px;
+}
+.counterValue.counterDone {
+  border-color: #41bc89;
+  background: #08734e;
+  color: #fff;
+}
+.counterElement .elementLabel {
+  transform: translateY(-3px);
+}
+
+/* Broken-wire validation */
+.rung.wiringFault {
+  box-shadow: inset 0 0 0 1px rgba(222, 65, 65, 0.34);
+}
+.wiringFault .rungNumber {
+  color: #c33737;
+}
+.wiringWarning {
+  position: absolute;
+  z-index: 8;
+  top: 5px;
+  right: 43px;
+  max-width: 270px;
+  overflow: hidden;
+  padding: 3px 7px;
+  border: 1px solid #e59696;
+  border-radius: 4px;
+  background: #fff0f0;
+  color: #b82e2e;
+  font: 600 8px "Prompt";
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 2px 7px rgba(137, 29, 29, 0.09);
+}
+
+/* OMRON CX-Programmer inspired workspace */
+.omronCanvas {
+  box-shadow: inset 61px 0 #f1f1f1;
+  background-image: radial-gradient(circle, #d2d2d2 1px, transparent 1.4px);
+}
+.omronCanvas::before,
+.omronCanvas::after {
+  top: 78px;
+  bottom: 0;
+  width: 2px;
+  background: #27934c;
+}
+.omronCanvas::after {
+  right: 18px;
+  display: block !important;
+}
+.omronCanvas .rung {
+  border-bottom-color: #d8d8d8;
+}
+.omronCanvas .rungWire {
+  width: calc(100% - 20px);
+}
+.omronCanvas .ladderElement {
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.76);
+}
+.omronCanvas .ladderElement .address {
+  color: #075c9b;
+  font-weight: 700;
+}
+.omronCanvas .ladderElement code {
+  color: #073e6b;
+}
+.omronCanvas .ladderElement .elementLabel {
+  color: #2076bd;
+  font-weight: 500;
+}
+.omronCanvas .ladderElement.selectedElement {
+  border: 1px dashed #333;
+  background: #90c2e7;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+.omronCanvas .ladderElement.energized code,
+.omronCanvas .ladderElement.energized .address {
+  color: #07974a;
+  text-shadow: 0 0 5px rgba(25, 181, 91, 0.24);
+}
+.omronCanvas .ladderWireSegment.poweredWire i {
+  background: #08a947;
+  box-shadow: 0 0 4px rgba(8, 169, 71, 0.42);
+}
+.omronCanvas .ladderCursor {
+  background: #91c2e5;
+  border-color: #3a3a3a;
+}
+.omronCanvas .rungNumber {
+  color: #294b65;
+}
+.omronCanvas .ladderElement.outputElement {
+  right: 0;
+  left: auto !important;
+}
+.omronCanvas .ladderWireSegment.stretchWire {
+  right: 82px;
+  width: auto !important;
+}
+.omronCanvas .outputElement::after {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #173c5d;
+  content: "";
+}
+.omronCanvas .outputElement.energized::after {
+  height: 3px;
+  background: #08a947;
+  box-shadow: 0 0 4px rgba(8, 169, 71, 0.42);
+}
+
+/* Parallel seal-in branch used by the OMRON motor starter */
+.rung.hasBranch,
+.hasBranch .rungWire {
+  height: 126px;
+}
+.hasBranch .ladderElement,
+.hasBranch .ladderWireSegment {
+  top: 34px;
+}
+.hasBranch .ladderCursor {
+  top: 2px;
+}
+.ladderBranch {
+  position: absolute;
+  z-index: 2;
+  top: 66px;
+  height: 56px;
+  border-left: 2px solid #173c5d;
+  border-right: 2px solid #173c5d;
+  pointer-events: none;
+}
+.ladderBranch > i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28px;
+  height: 2px;
+  background: #173c5d;
+}
+.branchElement {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  width: 82px;
+  height: 55px;
+  background: #fff;
+  color: #0a4c7e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.branchElement small {
+  color: #075c9b;
+  font: 700 8px "IBM Plex Mono";
+}
+.branchElement code {
+  color: #073e6b;
+  font: 600 13px "IBM Plex Mono";
+}
+.branchElement em {
+  color: #2076bd;
+  font-size: 7px;
+  font-style: normal;
+}
+.ladderBranch.branchPowered,
+.branchPowered .branchElement small,
+.branchPowered .branchElement code {
+  color: #07974a;
+  border-color: #08a947;
+}
+.ladderBranch.branchPowered > i {
+  height: 3px;
+  background: #08a947;
+  box-shadow: 0 0 4px rgba(8, 169, 71, 0.42);
+}
+
+/* Compact CX-Programmer cell styling */
+.omronCanvas {
+  background-size: 84px 64px;
+  background-position: 106px 110px;
+}
+.omronCanvas .rung:not(.hasBranch),
+.omronCanvas .rung:not(.hasBranch) .rungWire {
+  height: 64px;
+}
+.omronCanvas .rung:not(.hasBranch) .ladderElement {
+  width: 82px;
+  height: 58px;
+}
+.omronCanvas .rung:not(.hasBranch) .ladderWireSegment {
+  height: 58px;
+}
+.omronCanvas .ladderWireSegment i {
+  height: 1px;
+  background: #202020;
+}
+.omronCanvas .outputElement::after {
+  height: 1px;
+  background: #202020;
+}
+.omronCanvas .ladderElement {
+  box-shadow: none;
+}
+.omronCanvas .ladderElement .address {
+  font-size: 9px;
+}
+.omronCanvas .ladderElement code {
+  font-size: 15px;
+}
+.omronCanvas .ladderElement .elementLabel {
+  font-size: 8px;
+}
+.omronCanvas .ladderElement.selectedElement {
+  outline: 1px dashed #292929;
+  outline-offset: -1px;
+  background-color: #90c2e7;
+  background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0 2px, transparent 2px 5px);
+}
+.omronCanvas .rung:not(.hasBranch) .ladderCursor {
+  top: 3px;
+  width: 2px;
+  height: 58px;
+  border: 0;
+  background: #27934c;
+  box-shadow: none;
+}
+.omronCanvas .ladderCursor::after {
+  display: none;
+}
+.omronCanvas .rung.hasBranch .ladderCursor {
+  width: 2px;
+  border: 0;
+  background: #27934c;
+  box-shadow: none;
+}
+.omronCanvas .rung:not(.hasBranch) .rungNumber {
+  top: 4px;
+}
+
+/* Prevent compact OMRON rows from clipping controls and live values */
+.omronCanvas .rung.hasTimingElement:not(.hasBranch),
+.omronCanvas .rung.hasTimingElement:not(.hasBranch) .rungWire {
+  height: 80px;
+}
+.omronCanvas .ladderElement.outputElement {
+  right: 32px;
+}
+.ladderElement.outputElement code {
+  letter-spacing: -1px;
+}
+.omronCanvas .ladderElement.outputElement code {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  transform: scaleX(1.08);
+}
+.toolList > button.coilTool code {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  transform: scaleX(1.08);
+}
+.omronCanvas .ladderWireSegment.stretchWire {
+  right: 114px;
+}
+.omronCanvas .outputElement::after {
+  width: 34px;
+}
+.omronCanvas .deleteRung {
+  right: auto;
+  left: -57px;
+  top: calc(100% - 31px);
+  width: 24px;
+  height: 24px;
+}
+.omronCanvas .wiringWarning {
+  right: 165px;
+}
+.omronCanvas .hasTimingElement .timerCountdown,
+.omronCanvas .hasTimingElement .counterValue {
+  bottom: -7px;
+}
+.editorToolbar {
+  min-width: 0;
+  overflow: hidden;
+}
+.editorToolbar > div:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.editorToolbar > div:last-child {
+  flex: none;
+}
+
+/* CX-Programmer style multi-cell selection */
+.omronCanvas .rungWire {
+  overflow: visible;
+}
+.ladderSelection {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  box-sizing: border-box;
+  border: 1px dashed #2d2d2d;
+  background: rgba(111, 176, 219, 0.72);
+  pointer-events: none;
+}
+.ladderSelection > i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 84px;
+  height: 64px;
+  box-sizing: border-box;
+  border: 1px dashed #292929;
+  background-color: rgba(166, 207, 235, 0.9);
+  background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.32) 0 2px, transparent 2px 5px);
+}
+
+/* Draggable vertical branch wire */
+.verticalWireTool code {
+  font: 700 29px/1 "IBM Plex Mono";
+  color: #0b4c80;
+}
+.verticalWireSegment {
+  position: absolute;
+  z-index: 4;
+  width: 22px;
+  transform: translateX(-11px);
+  cursor: grab;
+}
+.verticalWireSegment > i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  width: 2px;
+  background: #202020;
+  pointer-events: none;
+}
+.verticalWireSegment:hover > i {
+  width: 3px;
+  background: #0d62a2;
+  box-shadow: 0 0 0 4px rgba(13, 98, 162, 0.08);
+}
+.verticalWireSegment > button {
+  position: absolute;
+  z-index: 2;
+  top: 4px;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fee;
+  color: #c83e3e;
+  cursor: pointer;
+  opacity: 0;
+}
+.verticalWireSegment:hover > button {
+  opacity: 1;
+}
+.verticalWireSegment.poweredVerticalWire > i {
+  width: 3px;
+  background: #08a947;
+  box-shadow: 0 0 4px rgba(8, 169, 71, 0.42);
+}
+
+.sealInButton {
+  width: 100%;
+  min-height: 38px;
+  margin: 0 0 11px;
+  padding: 6px 8px;
+  border: 1px solid #c6d5df;
+  border-radius: 5px;
+  background: #f3f7fa;
+  color: #315d7c;
+  font: 600 8px "Prompt";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.sealInButton:hover {
+  border-color: #0e5d98;
+  background: #eaf4fb;
+}
+.sealInButton.sealInActive {
+  border-color: #35af7c;
+  background: #e9f9f2;
+  color: #08744e;
+  box-shadow: inset 3px 0 #1bb675;
+}
+
+/* Vendor-specific programming environments */
+.brandSIEMENS .programStrip {
+  border-top: 5px solid #009999;
+  background: linear-gradient(90deg, #dce6e7 0 63px, #edf3f3 63px 100%);
+}
+.brandSIEMENS .programStrip > div b:first-child,
+.brandSIEMENS .modeNav .activeMode {
+  color: #007d80;
+}
+.brandSIEMENS .modeNav .activeMode {
+  border-color: #009999;
+}
+.brandSIEMENS .ladderCanvas::before {
+  background: #009999;
+}
+
+.brandMITSUBISHI .programStrip {
+  border-top: 5px solid #e60012;
+  background: linear-gradient(90deg, #e7e7e7 0 63px, #f8f8f8 63px 100%);
+}
+.brandMITSUBISHI .programStrip > div b:first-child,
+.brandMITSUBISHI .modeNav .activeMode {
+  color: #bd0010;
+}
+.brandMITSUBISHI .modeNav .activeMode {
+  border-color: #e60012;
+}
+.brandMITSUBISHI .ladderCanvas::before {
+  background: #e60012;
+}
+
+.brandOMRON .programStrip {
+  border-top: 0;
+  background: linear-gradient(90deg, #e8e8e8 0 63px, #fff600 63px 100%);
+}
+.brandOMRON .modeNav .activeMode {
+  color: #075c9b;
+  border-color: #fff000;
+}
+
+.brandALLEN_BRADLEY .programStrip {
+  border-top: 5px solid #c91920;
+  background: linear-gradient(90deg, #d8dde0 0 63px, #eceff1 63px 100%);
+}
+.brandALLEN_BRADLEY .programStrip > div b:first-child,
+.brandALLEN_BRADLEY .modeNav .activeMode {
+  color: #b51319;
+}
+.brandALLEN_BRADLEY .modeNav .activeMode {
+  border-color: #c91920;
+}
+.brandALLEN_BRADLEY .ladderCanvas::before {
+  background: #c91920;
+}
+
+.brandSCHNEIDER .programStrip {
+  border-top: 5px solid #36a549;
+  background: linear-gradient(90deg, #dfe8e0 0 63px, #eef6ef 63px 100%);
+}
+.brandSCHNEIDER .programStrip > div b:first-child,
+.brandSCHNEIDER .modeNav .activeMode {
+  color: #25883a;
+}
+.brandSCHNEIDER .modeNav .activeMode {
+  border-color: #36a549;
+}
+.brandSCHNEIDER .ladderCanvas::before {
+  background: #36a549;
+}
+
+.brandDELTA .programStrip {
+  border-top: 5px solid #1769aa;
+  background: linear-gradient(90deg, #dce4eb 0 63px, #edf4fa 63px 100%);
+}
+.brandDELTA .programStrip > div b:first-child,
+.brandDELTA .modeNav .activeMode {
+  color: #12588f;
+}
+.brandDELTA .modeNav .activeMode {
+  border-color: #1769aa;
+}
+.brandDELTA .ladderCanvas::before {
+  background: #1769aa;
+}
+
+.brandPANASONIC .programStrip {
+  border-top: 5px solid #155fa0;
+  background: linear-gradient(90deg, #dbe3ea 0 63px, #edf2f7 63px 100%);
+}
+.brandPANASONIC .programStrip > div b:first-child,
+.brandPANASONIC .modeNav .activeMode {
+  color: #104f85;
+}
+.brandPANASONIC .modeNav .activeMode {
+  border-color: #155fa0;
+}
+.brandPANASONIC .ladderCanvas::before {
+  background: #155fa0;
+}
+
+.brandUNIVERSAL .programStrip {
+  border-top: 5px solid #695ee8;
+  background: linear-gradient(90deg, #e3e1ef 0 63px, #f2f1fb 63px 100%);
+}
+.brandUNIVERSAL .programStrip > div b:first-child,
+.brandUNIVERSAL .modeNav .activeMode {
+  color: #5146c9;
+}
+.brandUNIVERSAL .modeNav .activeMode {
+  border-color: #695ee8;
+}
+.brandUNIVERSAL .ladderCanvas::before {
+  background: #695ee8;
+}
+
+.brandSIEMENS .ladderElement.selectedElement { border-color: #009999; background: #dff4f3; box-shadow: inset 0 0 0 2px rgba(0, 153, 153, 0.18); }
+.brandMITSUBISHI .ladderElement.selectedElement { border-color: #e60012; background: #fff0f1; box-shadow: inset 0 0 0 2px rgba(230, 0, 18, 0.13); }
+.brandALLEN_BRADLEY .ladderElement.selectedElement { border-color: #c91920; background: #fff0f0; box-shadow: inset 0 0 0 2px rgba(201, 25, 32, 0.13); }
+.brandSCHNEIDER .ladderElement.selectedElement { border-color: #36a549; background: #ecf8ee; box-shadow: inset 0 0 0 2px rgba(54, 165, 73, 0.14); }
+.brandDELTA .ladderElement.selectedElement,
+.brandPANASONIC .ladderElement.selectedElement { border-color: #1769aa; background: #eaf3fa; box-shadow: inset 0 0 0 2px rgba(23, 105, 170, 0.14); }
+.brandUNIVERSAL .ladderElement.selectedElement { border-color: #695ee8; background: #f0efff; box-shadow: inset 0 0 0 2px rgba(105, 94, 232, 0.14); }
+
+/* Brand handbook */
+.guideNavButton {
+  margin-left: 2px;
+  color: #173f61 !important;
+}
+.guideNavButton > svg {
+  color: #d39c00;
+}
+.guideOverlay {
+  position: fixed;
+  z-index: 3200;
+  inset: 0;
+  padding: 0;
+  background: rgba(5, 24, 41, 0.76);
+  backdrop-filter: blur(9px);
+  display: grid;
+  place-items: center;
+}
+.guideDialog {
+  width: 100vw;
+  height: 100vh;
+  max-height: none;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: #f5f8fb;
+  box-shadow: 0 28px 90px rgba(0, 14, 27, 0.42);
+}
+.guideHeader {
+  box-sizing: border-box;
+  height: 92px;
+  min-height: 92px;
+  padding: 18px 25px;
+  background: #092946;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.guideHeader span {
+  color: #ffc928;
+  font: 600 8px "IBM Plex Mono";
+  letter-spacing: 1.8px;
+}
+.guideHeader h2 {
+  margin: 4px 0 2px;
+  font-size: 21px;
+}
+.guideHeader p {
+  margin: 0;
+  color: #a9bfd0;
+  font-size: 9px;
+}
+.guideHeader > button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+.guideBrandTabs {
+  box-sizing: border-box;
+  height: 62px;
+  padding: 9px 13px;
+  overflow-x: auto;
+  border-bottom: 1px solid #d6e0e8;
+  background: #fff;
+  display: flex;
+  gap: 6px;
+}
+.guideBrandTabs button {
+  min-width: 112px;
+  height: 44px;
+  padding: 5px 9px;
+  border: 1px solid #dce4ea;
+  border-radius: 6px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+.guideBrandTabs button > span {
+  font: 700 9px "IBM Plex Mono";
+}
+.guideBrandTabs button > b {
+  color: #536a7b;
+  font-size: 8px;
+  white-space: nowrap;
+}
+.guideBrandTabs button.activeGuideBrand {
+  background: #f3f7fa;
+  box-shadow: inset 0 -2px currentColor;
+}
+.guideBody {
+  box-sizing: border-box;
+  height: calc(100vh - 154px);
+  max-height: none;
+  overflow: auto;
+  padding: 16px;
+}
+.guideHero {
+  min-height: 205px;
+  overflow: hidden;
+  border: 1px solid #cfdae3;
+  border-radius: 10px;
+  background: #0b2943;
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(210px, .8fr);
+}
+.guideHero > img {
+  width: 100%;
+  height: 205px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.guideHero > div {
+  padding: 22px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.guideHero > div > span {
+  font: 700 13px "IBM Plex Mono";
+}
+.guideHero h3 {
+  margin: 3px 0 0;
+  font-size: 25px;
+}
+.guideHero p {
+  margin: 0 0 12px;
+  color: #ffc928;
+  font-size: 10px;
+}
+.guideHero small {
+  color: #b9cad7;
+  font-size: 9px;
+  line-height: 1.7;
+}
+.guideColumns {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: .85fr 1.45fr;
+  gap: 12px;
+}
+.guideSteps,
+.guideExample {
+  padding: 15px;
+  border: 1px solid #d6e0e8;
+  border-radius: 9px;
+  background: #fff;
+}
+.guideSteps h4,
+.guideExample h4 {
+  margin: 0 0 12px;
+  color: #173b59;
+  font-size: 11px;
+}
+.guideSteps > div {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.guideSteps > div > span {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #0e5d98;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font: 700 8px "IBM Plex Mono";
+}
+.guideSteps p {
+  margin: 0;
+  color: #647b8d;
+  font-size: 9px;
+}
+.guideAddressRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.guideVendorFacts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+.guideVendorFacts > span {
+  min-height: 49px;
+  padding: 8px 10px;
+  border-left: 3px solid #ffc928;
+  border-radius: 5px;
+  background: #f1f6fa;
+  color: #7b8d9b;
+  font: 600 7px "IBM Plex Mono";
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.guideVendorFacts b {
+  margin-top: 3px;
+  color: #123f60;
+  font-size: 9px;
+  line-height: 1.35;
+}
+.guideExampleTitle {
+  margin-top: 15px !important;
+}
+.guideAddressRow > span {
+  padding: 7px;
+  border-radius: 5px;
+  background: #edf3f7;
+  color: #82919e;
+  font: 600 7px "IBM Plex Mono";
+  display: flex;
+  flex-direction: column;
+}
+.guideAddressRow b {
+  margin-top: 2px;
+  overflow: hidden;
+  color: #0e547f;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.guideLadder {
+  position: relative;
+  height: 76px;
+  margin: 10px 0;
+  border-left: 2px solid #24924c;
+  border-right: 2px solid #24924c;
+  background-image: radial-gradient(#d0d8de .7px, transparent .8px);
+  background-size: 26px 26px;
+  display: flex;
+  align-items: center;
+}
+.guideLadder > i,
+.guideLadder > u {
+  flex: 1;
+  height: 2px;
+  background: #173c5d;
+  text-decoration: none;
+}
+.guideLadder > span {
+  flex: none;
+  width: 86px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.guideLadder small {
+  color: #075c9b;
+  font: 700 8px "IBM Plex Mono";
+}
+.guideLadder b {
+  color: #103e61;
+  font: 700 15px "IBM Plex Mono";
+}
+.guideLadder em {
+  color: #2076bd;
+  font-size: 7px;
+  font-style: normal;
+}
+.guideTip {
+  margin: 0;
+  padding: 8px;
+  border: 1px solid #f1d56c;
+  border-radius: 5px;
+  background: #fff9df;
+  color: #715f24;
+  font-size: 8px;
+  line-height: 1.5;
+  display: flex;
+  gap: 6px;
+}
+.guideTip svg {
+  flex: none;
+  color: #bb8700;
+}
+.guideActions {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  background: #eaf1f6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.guideActions span {
+  color: #627a8c;
+  font-size: 8px;
+}
+.guideActions button {
+  height: 34px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 5px;
+  background: #ffc928;
+  color: #102d48;
+  font: 600 9px "Prompt";
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .guideOverlay { padding: 0; }
+  .guideDialog { width: 100vw; height: 100vh; max-height: none; }
+  .guideHeader { height: 76px; min-height: 76px; padding: 12px 15px; }
+  .guideHeader h2 { font-size: 16px; }
+  .guideHeader p { display: none; }
+  .guideBody { height: calc(100vh - 129px); max-height: none; padding: 9px; }
+  .guideHero { grid-template-columns: 1fr; }
+  .guideHero > img { height: 155px; }
+  .guideHero > div { padding: 14px; }
+  .guideHero h3 { font-size: 19px; }
+  .guideColumns { grid-template-columns: 1fr; }
+  .guideVendorFacts { grid-template-columns: 1fr; }
+  .guideActions { align-items: stretch; flex-direction: column; gap: 7px; }
+}
+
+/* Drag-and-drop ladder placement */
+.toolList > button[draggable="true"] {
+  cursor: grab;
+}
+.toolList > button[draggable="true"]:active {
+  cursor: grabbing;
+  border-color: #ffc928;
+  background: #fff9dc;
+}
+.wireTool code svg {
+  width: 42px;
+  height: 22px;
+  stroke-width: 1.8;
+}
+.rungWire {
+  height: 94px;
+  background: transparent;
+  padding: 0;
+  gap: 0;
+  position: relative;
+}
+.rungWire::after {
+  content: "DROP ZONE";
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  color: #b8c5d1;
+  font: 600 7px "IBM Plex Mono";
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+.emptyRung {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+.ladderElement {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 82px;
+  cursor: grab;
+  z-index: 2;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(18, 60, 97, 0.04);
+}
+.ladderElement:hover {
+  border-color: #9ebbd2;
+  box-shadow: 0 6px 16px rgba(18, 60, 97, 0.12);
+}
+.ladderElement:active {
+  cursor: grabbing;
+}
+.ladderElement::before,
+.ladderElement::after,
+.ladderElement.energized::before,
+.ladderElement.energized::after {
+  display: none;
+}
+.ladderWireSegment {
+  position: absolute;
+  top: 50%;
+  height: 22px;
+  transform: translateY(-50%);
+  cursor: grab;
+  z-index: 1;
+}
+.ladderWireSegment i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  height: 2px;
+  background: #173c5d;
+  pointer-events: none;
+}
+.ladderWireSegment:hover i {
+  height: 3px;
+  background: #0d62a2;
+  box-shadow: 0 0 0 4px rgba(13, 98, 162, 0.08);
+}
+.ladderWireSegment.poweredWire i {
+  height: 3px;
+  background: #1bb675;
+  box-shadow: 0 0 7px rgba(27, 182, 117, 0.7);
+}
+.ladderWireSegment > button {
+  position: absolute;
+  right: -5px;
+  top: -8px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fee;
+  color: #c83e3e;
+  cursor: pointer;
+  opacity: 0;
+}
+.ladderWireSegment:hover > button {
+  opacity: 1;
+}
+
+/* Classic PLC programming sheet inspired by the supplied reference */
+.ladderCanvas {
+  padding: 78px 0 80px 64px;
+  background-color: #fff;
+  background-image: radial-gradient(circle, #d7d7d7 1px, transparent 1.4px);
+  background-size: 84px 84px;
+  background-position: 106px 118px;
+  border-top: 1px solid #9da6ad;
+}
+.ladderCanvas::before {
+  left: 62px;
+  top: 78px;
+  bottom: 0;
+  width: 3px;
+  background: #27934c;
+}
+.ladderCanvas::after,
+.railLabels {
+  display: none;
+}
+.programStrip {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 76px;
+  border-bottom: 1px solid #b8bec3;
+  background: linear-gradient(90deg, #e8e8e8 0 63px, #fff600 63px 100%);
+  box-shadow: inset 0 1px #70777d;
+}
+.programStrip > div {
+  height: 100%;
+  margin-left: 76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 13px;
+  color: #252525;
+  font: 500 12px Arial, sans-serif;
+}
+.programIndex {
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  color: #173c5d;
+  font: 700 11px Arial, sans-serif;
+}
+.rung {
+  height: 84px;
+  border-radius: 0;
+  border-bottom: 1px solid #e2e2e2;
+}
+.rung.selectedRung {
+  background: transparent;
+  outline: 0;
+}
+.rungNumber {
+  left: -58px;
+  top: 7px;
+  width: 46px;
+  color: #334a5c;
+  font: 700 10px Arial, sans-serif;
+}
+.rungWire {
+  height: 84px;
+}
+.rungWire::after {
+  display: none;
+}
+.ladderCursor {
+  position: absolute;
+  z-index: 0;
+  top: 6px;
+  width: 82px;
+  height: 68px;
+  box-sizing: border-box;
+  border: 1px dashed #323232;
+  background: #8fc1e5;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+.ladderCursor::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #249a4b;
+}
+.ladderElement {
+  width: 82px;
+  height: 68px;
+  border-radius: 0;
+  border-color: transparent;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.94);
+}
+.ladderElement:hover {
+  border: 1px dashed #4e6578;
+  box-shadow: none;
+  background: #edf6fc;
+}
+.ladderWireSegment {
+  height: 68px;
+}
+.ladderWireSegment i {
+  top: 33px;
+  background: #173c5d;
+}
+.emptyRung {
+  border-radius: 0;
+  background: #eaf4fb;
+  border-color: #5f7485;
+  color: #435767;
+}
+.addRung {
+  margin: 12px 0 0 8px;
+  border-radius: 0;
+}
+
+/* Keep contextual delete controls attached to their own ladder object */
+.rungWire {
+  overflow: hidden;
+}
+.ladderWireSegment > button {
+  right: 3px;
+  top: 3px;
+  z-index: 4;
+}
+.ladderElement > button {
+  top: 3px;
+  right: 3px;
+  z-index: 4;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+/* The classic ladder sheet uses a white drawing surface. */
+.ladderCanvas {
+  background-color: #ffffff !important;
+}
+.ladderCanvas .rung,
+.ladderCanvas .rungWire,
+.ladderCanvas .selectedRung {
+  background-color: transparent !important;
+}
+
+/* Ladder instruction settings and HMI binding */
+.ladderElement.selectedElement {
+  border: 1px dashed #8a6800;
+  background: #fff8ce;
+  box-shadow: inset 0 0 0 2px rgba(255, 201, 40, 0.28);
+}
+.ladderProperties {
+  margin: -2px -2px 18px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #d7e1e9;
+}
+.ladderProperties .propertyForm {
+  padding-bottom: 12px;
+}
+.hmiLinkStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 9px;
+  padding: 9px;
+  border: 1px solid #d3e1eb;
+  border-radius: 6px;
+  background: #edf5fb;
+  color: #0e5d98;
+}
+.hmiLinkStatus > svg {
+  flex: none;
+  font-size: 17px;
+}
+.hmiLinkStatus > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.hmiLinkStatus b {
+  font-size: 9px;
+}
+.hmiLinkStatus small {
+  overflow: hidden;
+  color: #738697;
+  font: 500 7px "IBM Plex Mono";
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.connectHmiButton {
+  width: 100%;
+  height: 37px;
+  border: 0;
+  border-radius: 5px;
+  background: #ffc928;
+  color: #102d48;
+  font: 600 9px "Prompt";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #d6a500;
+}
+.connectHmiButton:hover {
+  background: #ffd64f;
+}
+
+/* Extended HMI object library */
+.miniSwitch {
+  width: 34px;
+  height: 18px;
+  padding: 3px;
+  border-radius: 12px;
+  background: #cbd6df;
+}
+.miniSwitch i {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+}
+.miniNumeric {
+  padding: 5px 7px;
+  border: 2px solid #294963;
+  border-radius: 3px;
+  background: #102536;
+  color: #64dcff;
+  font: 600 10px "IBM Plex Mono";
+}
+.miniTank {
+  position: relative;
+  width: 24px;
+  height: 31px;
+  overflow: hidden;
+  border: 2px solid #557086;
+  border-radius: 3px 3px 7px 7px;
+}
+.miniTank i {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  height: 55%;
+  background: #25a7dc;
+}
+.miniAlarm {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #f04e45;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font: 700 13px Arial;
+}
+.draggableWidget > .hmiSwitch,
+.draggableWidget > .hmiNumeric,
+.draggableWidget > .hmiTank,
+.draggableWidget > .hmiAlarm {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.hmiSwitch {
+  border: 1px solid #d4dfdb;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.96);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.hmiSwitch > span {
+  width: 45px;
+  height: 24px;
+  padding: 3px;
+  border-radius: 15px;
+  background: #aebbc4;
+  transition: 0.18s;
+}
+.hmiSwitch > span i {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+  transition: transform 0.18s;
+}
+.hmiSwitch > span.switchOn i {
+  transform: translateX(21px);
+}
+.hmiSwitch b,
+.hmiNumeric b,
+.hmiTank b {
+  font-size: 9px;
+}
+.hmiSwitch small,
+.hmiNumeric small,
+.hmiTank small {
+  color: #82908b;
+  font: 500 7px "IBM Plex Mono";
+}
+.hmiNumeric {
+  border: 1px solid #d4dfdb;
+  border-radius: 7px;
+  background: #f7fafb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hmiNumeric > span {
+  min-width: 78px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border: 3px solid #2f485b;
+  border-radius: 4px;
+  background: #0d202e;
+  text-align: right;
+  font: 600 18px "IBM Plex Mono";
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
+}
+.hmiTank {
+  border: 1px solid #d4dfdb;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.96);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.tankBody {
+  position: relative;
+  width: 58px;
+  height: 105px;
+  margin-bottom: 7px;
+  overflow: hidden;
+  border: 4px solid #547083;
+  border-top-width: 2px;
+  border-radius: 4px 4px 14px 14px;
+  background: repeating-linear-gradient(0deg, transparent 0 20px, rgba(49, 78, 98, 0.12) 21px);
+}
+.tankBody i {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  left: 3px;
+  opacity: 0.82;
+  transition: height 0.35s;
+}
+.tankBody em {
+  position: absolute;
+  z-index: 1;
+  top: 42%;
+  left: 0;
+  width: 100%;
+  color: #163b55;
+  text-align: center;
+  font: 700 10px "IBM Plex Mono";
+  font-style: normal;
+}
+.hmiAlarm {
+  border: 2px solid #d3dde4;
+  border-radius: 6px;
+  background: #f8fafb;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+.hmiAlarm > strong {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #8b9aa5;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font: 700 17px Arial;
+}
+.hmiAlarm > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.hmiAlarm b {
+  overflow: hidden;
+  color: #263f52;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hmiAlarm small {
+  color: #82919c;
+  font: 600 7px "IBM Plex Mono";
+}
+.hmiAlarm.alarmOn {
+  background: #fff8dc;
+  box-shadow: 0 0 14px rgba(255, 201, 40, 0.28);
+}
+
+.deleteRung {
+  position: absolute;
+  z-index: 7;
+  top: 7px;
+  right: 8px;
+  width: 27px;
+  height: 27px;
+  border: 1px solid #efc9c9;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #c94747;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: 0.15s;
+}
+.rung:hover .deleteRung,
+.selectedRung .deleteRung {
+  opacity: 1;
+}
+.deleteRung:hover {
+  border-color: #df7777;
+  background: #ffeaea;
+  color: #b52f2f;
+}
+
+/* Guided PLC lessons */
+.lessonNavButton {
+  margin-left: 8px;
+  border-left: 1px solid #d9e2e9 !important;
+  color: #173f61 !important;
+}
+.lessonNavButton > svg {
+  color: #d39c00;
+}
+.lessonOverlay {
+  position: fixed;
+  z-index: 3000;
+  inset: 0;
+  padding: 34px;
+  background: rgba(5, 25, 43, 0.72);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+}
+.lessonDialog {
+  width: min(1050px, 96vw);
+  max-height: min(820px, 92vh);
+  overflow: hidden;
+  border: 1px solid rgba(255, 201, 40, 0.55);
+  border-radius: 14px;
+  background: #f5f8fb;
+  box-shadow: 0 28px 80px rgba(0, 15, 29, 0.38);
+}
+.lessonHeader {
+  min-height: 112px;
+  padding: 23px 28px;
+  background: #0a2945;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.lessonHeader span {
+  color: #ffc928;
+  font: 600 9px "IBM Plex Mono";
+  letter-spacing: 1.8px;
+}
+.lessonHeader h2 {
+  margin: 5px 0 3px;
+  font-size: 23px;
+}
+.lessonHeader p {
+  margin: 0;
+  color: #aabed0;
+  font-size: 10px;
+}
+.lessonHeader > button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+.lessonGrid {
+  max-height: calc(92vh - 112px);
+  overflow: auto;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.lessonCard {
+  min-height: 126px;
+  padding: 15px;
+  border: 1px solid #d7e1e9;
+  border-radius: 9px;
+  background: #fff;
+  color: #17354f;
+  display: grid;
+  grid-template-columns: 47px 1fr auto;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.lessonCard:hover {
+  transform: translateY(-2px);
+  border-color: #1b679d;
+  box-shadow: 0 9px 24px rgba(12, 58, 91, 0.1);
+}
+.lessonCard.activeLesson {
+  border-color: #e2b000;
+  background: #fffbed;
+  box-shadow: inset 3px 0 #ffc928;
+}
+.lessonNumber {
+  width: 43px;
+  height: 43px;
+  border-radius: 7px;
+  background: #0d416b;
+  color: #ffc928;
+  display: grid;
+  place-items: center;
+  font: 700 13px "IBM Plex Mono";
+}
+.lessonContent {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lessonContent small {
+  color: #b18000;
+  font-size: 8px;
+  font-weight: 600;
+}
+.lessonContent > b {
+  margin-top: 3px;
+  font-size: 12px;
+}
+.lessonContent em {
+  color: #648096;
+  font-size: 9px;
+  font-style: normal;
+}
+.lessonContent p {
+  margin: 7px 0 0;
+  color: #7b8d9b;
+  font-size: 8px;
+  line-height: 1.5;
+}
+.lessonLoad {
+  align-self: end;
+  color: #0e5d98;
+  font-size: 8px;
+  white-space: nowrap;
+}
+.lessonLoad b {
+  margin-left: 3px;
+  color: #d79e00;
+  font-size: 13px;
+}
+
+@media (max-width: 700px) {
+  .lessonOverlay {
+    padding: 8px;
+  }
+  .lessonDialog {
+    width: 100%;
+    max-height: 96vh;
+  }
+  .lessonHeader {
+    min-height: 94px;
+    padding: 16px;
+  }
+  .lessonHeader h2 {
+    font-size: 17px;
+  }
+  .lessonHeader p {
+    display: none;
+  }
+  .lessonGrid {
+    max-height: calc(96vh - 94px);
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+  .lessonCard {
+    min-height: 112px;
+    grid-template-columns: 43px 1fr;
+  }
+  .lessonLoad {
+    display: none;
+  }
+}
+
+/* PLC-style CPU controls */
+.plcModeBadge {
+  min-width: 55px;
+  height: 26px;
+  padding: 0 7px;
+  border: 1px solid #cbd7df;
+  border-radius: 4px;
+  background: #eef2f5;
+  color: #607383;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 8px "IBM Plex Mono";
+  letter-spacing: 0.6px;
+}
+.plcModeBadge.modeRUN {
+  border-color: #62c49d;
+  background: #e7f8f1;
+  color: #08794f;
+  box-shadow: 0 0 0 3px rgba(33, 178, 119, 0.1);
+}
+.plcModeBadge.modeSTOP {
+  border-color: #e7c55f;
+  background: #fff8d8;
+  color: #896500;
+}
+.plcModeBadge.modeFAULT {
+  border-color: #e48e8e;
+  background: #fff0f0;
+  color: #bd3636;
+}
+.downloadButton,
+.stopButton {
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font: 600 8px "IBM Plex Mono";
+  cursor: pointer;
+}
+.downloadButton {
+  border: 1px solid #9bb4c8;
+  background: #f5f9fc;
+  color: #164f7a;
+}
+.downloadButton:hover {
+  border-color: #0e5d98;
+  background: #eaf4fb;
+}
+.stopButton {
+  border: 1px solid #e0a2a2;
+  background: #fff5f5;
+  color: #b83b3b;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.stopButton:not(:disabled):hover {
+  background: #ffe5e5;
+}
+.runButton:disabled,
+.stopButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+  box-shadow: none;
+}
+.cpuMessage {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+.cpuMessage span {
+  max-width: 440px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .plcModeBadge,
+  .downloadButton {
+    display: none;
+  }
+  .cpuMessage span {
+    max-width: 220px;
+  }
+}
+@media (max-width: 620px) {
+  .runButton,
+  .stopButton {
+    width: 38px;
+    padding: 0;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 0;
+  }
+  .runButton svg,
+  .stopButton svg {
+    font-size: 14px;
+  }
+  .cpuMessage span {
+    display: none;
+  }
+}
+
+/* PLC Lab identity: deep industrial blue with safety-yellow accents */
+.brandPage,
+.appShell {
+  background: #f3f6fa;
+  color: #0b1f36;
+}
+.brandPage {
+  background-image: linear-gradient(
+      rgba(13, 61, 102, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(13, 61, 102, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.brandHeader,
+.appHeader {
+  border-color: #d7e0ea;
+  background: rgba(255, 255, 255, 0.92);
+}
+.logoMark > svg,
+.logoMark span span,
+.brandMain h1 em,
+.eyebrow {
+  color: #12558b;
+}
+.eyebrow span {
+  background: #ffc928;
+}
+.logoMark > svg {
+  filter: drop-shadow(0 3px 8px rgba(18, 85, 139, 0.2));
+}
+.avatar {
+  background: #0b3154;
+  color: #ffc928;
+  box-shadow: inset 0 0 0 1px rgba(255, 201, 40, 0.55);
+}
+.brandMain h1 {
+  color: #091d33;
+}
+.lead {
+  color: #66768a;
+}
+.searchBox {
+  border-color: #d4deea;
+  box-shadow: 0 12px 28px rgba(14, 53, 87, 0.08);
+}
+.searchBox:focus-within {
+  border-color: #155f99;
+  box-shadow: 0 0 0 3px rgba(21, 95, 153, 0.1);
+}
+.brandCard {
+  border-color: #dae3ec;
+  box-shadow: 0 4px 14px rgba(11, 49, 84, 0.035);
+}
+.brandCard:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 3px;
+  background: #ffc928;
+  border-radius: 0 4px 4px 0;
+  opacity: 0;
+  transition: 0.2s;
+}
+.brandCard:hover {
+  border-color: #155f99;
+  box-shadow: 0 12px 30px rgba(11, 49, 84, 0.12);
+}
+.brandCard:hover:before {
+  opacity: 1;
+}
+.brandCard:hover .cardArrow {
+  color: #155f99;
+}
+.standardNote svg {
+  color: #d69f00;
+}
+.appShell {
+  background: #e8eef4;
+}
+.appHeader {
+  box-shadow: 0 2px 14px rgba(11, 49, 84, 0.06);
+}
+.runButton {
+  background: #ffc928;
+  color: #0b2945;
+  box-shadow: 0 3px 0 #dca900;
+}
+.runButton:hover {
+  background: #ffd54f;
+}
+.modeNav {
+  border-color: #d5dfe9;
+}
+.modeNav .activeMode {
+  color: #0c568f;
+  border-color: #ffc928;
+  background: #f4f8fc;
+}
+.modeNav .activeMode svg {
+  color: #d99e00;
+}
+.statusLine i.online {
+  background: #ffc928;
+  box-shadow: 0 0 0 4px rgba(255, 201, 40, 0.18);
+}
+.toolbox,
+.monitorPanel,
+.hmiTools {
+  background: #f8fafc;
+  border-color: #d3dde7;
+}
+.panelHeading {
+  border-color: #dfe6ed;
+}
+.panelHeading span {
+  color: #183c5d;
+}
+.toolList > button,
+.ioList button,
+.widgetGrid button {
+  border-color: #dbe3eb;
+}
+.toolList > button:hover,
+.widgetGrid button:hover {
+  border-color: #155f99;
+  background: #f4f8fc;
+}
+.toolList code {
+  color: #0b4c80;
+}
+.tip {
+  background: #fff8d9;
+  border-color: #f1d66a;
+  color: #9c7300;
+}
+.tip span {
+  color: #665f48;
+}
+.tip b {
+  color: #8a6500;
+}
+.ladderCanvas {
+  background-color: #fff;
+  background-image: radial-gradient(#cbd7e3 0.65px, transparent 0.65px);
+}
+.ladderCanvas:before,
+.ladderCanvas:after,
+.rungWire,
+.ladderElement:before,
+.ladderElement:after {
+  background: #173c5d;
+}
+.selectedRung {
+  background: rgba(18, 85, 139, 0.04);
+  outline-color: rgba(18, 85, 139, 0.3);
+}
+.ladderElement .address {
+  color: #0d62a2;
+}
+.ladderElement code {
+  color: #123c61;
+}
+.ladderElement.energized code {
+  color: #d89f00;
+  text-shadow: 0 0 8px rgba(255, 201, 40, 0.48);
+}
+.ladderElement.energized:before,
+.ladderElement.energized:after {
+  background: #ffc928;
+  box-shadow: 0 0 6px rgba(255, 201, 40, 0.75);
+}
+.addRung:hover {
+  color: #0d5c95;
+  border-color: #155f99;
+  background: #f6faff;
+}
+.ioList button.ioOn {
+  border-color: #f0d15a;
+  background: #fffbea;
+}
+.ioList .ioOn .ioDot {
+  background: #ffc928;
+  box-shadow: 0 0 0 3px #fff1a8;
+}
+.ioList .ioOn em {
+  color: #9b7200;
+}
+.hmiEditor {
+  background: #d6e0ea;
+}
+.screenFrame {
+  background: #071a2d;
+  border-color: #183a57;
+  box-shadow: 0 24px 55px rgba(7, 31, 52, 0.28);
+}
+.screenTop {
+  background: #0b2c49;
+}
+.screenTop svg {
+  color: #ffc928;
+}
+.screenGrid {
+  background-color: #edf3f8;
+  background-image: linear-gradient(
+      rgba(12, 74, 122, 0.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(12, 74, 122, 0.055) 1px, transparent 1px);
+}
+.miniButton,
+.hmiPush > span {
+  background: #0e5d98;
+}
+.miniLamp,
+.bigLampOn {
+  background: #ffc928;
+}
+.miniLamp {
+  box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.16), 0 0 0 4px #fff2b8;
+}
+.miniGauge {
+  border-color: #14649f;
+}
+.bigLampOn {
+  box-shadow: 0 0 18px rgba(255, 201, 40, 0.9), inset 0 0 5px white;
+}
+.hmiPushOn > span {
+  background: #ffc928;
+  color: #112a41;
+}
+.hmiLabel {
+  color: #153d60;
+}
+
+/* Free-position HMI canvas and editable object properties */
+.hmiWorkspace {
+  grid-template-columns: 220px minmax(430px, 1fr) 235px;
+}
+.screenGrid {
+  display: block;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+.draggableWidget {
+  position: absolute;
+  z-index: 1;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: border-color 0.12s, box-shadow 0.12s;
+  user-select: none;
+}
+.draggableWidget:hover {
+  border-color: rgba(21, 95, 153, 0.45);
+}
+.draggableWidget.selectedWidget {
+  border-color: #ffc928;
+  box-shadow: 0 0 0 2px rgba(255, 201, 40, 0.25);
+}
+.dragHandle {
+  position: absolute;
+  z-index: 4;
+  right: 5px;
+  top: 4px;
+  width: 23px;
+  height: 20px;
+  border: 1px solid #cfdbe5;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #47647c;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: grab;
+  touch-action: none;
+  opacity: 0;
+  transition: 0.15s;
+}
+.draggableWidget:hover .dragHandle,
+.selectedWidget .dragHandle {
+  opacity: 1;
+}
+.dragHandle:active {
+  cursor: grabbing;
+  background: #ffc928;
+  color: #102d48;
+  border-color: #e1ae00;
+}
+.draggableWidget > .hmiWidget,
+.draggableWidget > .hmiPush,
+.draggableWidget > .hmiLabel {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.draggableWidget > .hmiLabel {
+  grid-column: auto;
+  padding: 0 18px;
+}
+.hmiPush > span {
+  transition: filter 0.15s, transform 0.15s;
+}
+.hmiPush:hover > span {
+  filter: brightness(1.08);
+}
+.propertyPanel {
+  background: #f8fafc;
+  border-left: 1px solid #d3dde7;
+  padding: 18px 13px;
+  overflow: auto;
+}
+.propertyPanel .panelHeading svg {
+  color: #997100;
+  font-size: 15px;
+}
+.propertyForm {
+  padding: 14px 2px;
+}
+.objectType {
+  height: 54px;
+  background: #edf3f8;
+  border: 1px solid #d7e2eb;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+.objectType > span {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: #0e5d98;
+  color: #ffc928;
+  display: grid;
+  place-items: center;
+  font: 700 13px "IBM Plex Mono";
+}
+.objectType div {
+  display: flex;
+  flex-direction: column;
+}
+.objectType b {
+  text-transform: capitalize;
+  font-size: 11px;
+  color: #173c5d;
+}
+.objectType small {
+  font-size: 8px;
+  color: #8393a1;
+}
+.propertyForm > label,
+.sizeFields label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 13px;
+  color: #607286;
+  font-size: 9px;
+  font-weight: 600;
+}
+.propertyForm input:not([type="color"]),
+.propertyForm select {
+  width: 100%;
+  height: 35px;
+  border: 1px solid #d5e0e9;
+  border-radius: 5px;
+  background: #fff;
+  padding: 0 9px;
+  color: #183b5c;
+  font: 500 10px "Prompt";
+  outline: 0;
+  box-sizing: border-box;
+}
+.propertyForm input:focus,
+.propertyForm select:focus {
+  border-color: #155f99;
+  box-shadow: 0 0 0 2px rgba(21, 95, 153, 0.1);
+}
+.colorField {
+  height: 36px;
+  border: 1px solid #d5e0e9;
+  border-radius: 5px;
+  background: #fff;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.colorField input {
+  width: 38px;
+  height: 26px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.colorField code {
+  font: 600 9px "IBM Plex Mono";
+  color: #506579;
+}
+.sizeFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.positionReadout {
+  display: flex;
+  gap: 7px;
+  margin: 1px 0 16px;
+}
+.positionReadout span {
+  flex: 1;
+  padding: 7px;
+  background: #edf3f8;
+  border-radius: 4px;
+  color: #758698;
+  font: 500 9px "IBM Plex Mono";
+}
+.positionReadout b {
+  float: right;
+  color: #163d60;
+}
+.deleteWidget {
+  width: 100%;
+  height: 35px;
+  border: 1px solid #efcaca;
+  border-radius: 5px;
+  background: #fff6f6;
+  color: #c63f3f;
+  font: 500 10px "Prompt";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.noSelection {
+  height: 220px;
+  color: #8a9aa8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+}
+.noSelection svg {
+  font-size: 25px;
+  color: #b1bdc7;
+}
+.noSelection b {
+  font-size: 10px;
+  color: #5d7183;
+}
+.noSelection span {
+  font-size: 8px;
+  line-height: 1.5;
+  max-width: 140px;
+}
+
+@media (max-width: 900px) {
+  .hmiWorkspace {
+    grid-template-columns: 170px minmax(400px, 1fr) 205px;
+  }
+  .propertyPanel {
+    padding: 12px 9px;
+  }
+  .screenFrame {
+    width: 94%;
+  }
+}
+@media (max-width: 620px) {
+  .hmiWorkspace {
+    grid-template-columns: 1fr;
+  }
+  .propertyPanel {
+    position: fixed;
+    right: 8px;
+    bottom: 8px;
+    z-index: 20;
+    width: 220px;
+    max-height: 58vh;
+    border: 1px solid #cbd8e3;
+    border-radius: 9px;
+    box-shadow: 0 18px 45px rgba(8, 37, 62, 0.25);
+  }
+  .propertyPanel .panelHeading {
+    display: flex;
+  }
+  .screenGrid {
+    display: block;
+    padding: 0;
+  }
+  .draggableWidget {
+    transform: scale(0.72);
+    transform-origin: top left;
+  }
+}
