@@ -1,18 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  // Allows verification builds to use a separate output while the local preview is running.
-  distDir: process.env.NEXT_DIST_DIR || ".next",
-  compiler: {
-    styledComponents: true,
+  basePath: '/project2', // 👈 ให้ Next.js รู้ว่าตัวเองสถิตอยู่ที่ /project2
+  
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/Motorcontrol', // 👈 เด้งไปที่ /Motorcontrol (M ตัวใหญ่ ตรงตามชื่อโฟลเดอร์)
+        permanent: false,
+      },
+    ];
   },
-  transpilePackages: [
-    "antd",
-    "@ant-design/icons",
-    "rc-util",
-    "rc-pagination",
-    "rc-picker",
-  ],
 };
 
 module.exports = nextConfig;
