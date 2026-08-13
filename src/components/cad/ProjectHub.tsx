@@ -1,3 +1,4 @@
+// src/components/cad/ProjectHub.tsx
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useState } from "react";
@@ -24,6 +25,8 @@ import {
   loadProjects,
 } from "@/features/cad/lib/projectRepository";
 import styles from "./ProjectHub.module.css";
+import { CloseOutlined, RightOutlined } from "@ant-design/icons";
+import React from "react";
 
 const documentMeta = {
   part: { label: "Part", description: "Create an individual 3D workpiece file", Icon: TbBox },
@@ -142,7 +145,7 @@ function CreateProjectDialog({
             <p>Part, Assembly, and Drawing are stored as separate files.</p>
           </div>
           <button aria-label="Close dialog" className={styles.iconButton} onClick={onClose}>
-            <TbX />
+            <CloseOutlined />
           </button>
         </div>
 
@@ -182,7 +185,7 @@ function CreateProjectDialog({
                       onChange={() => setDocumentType(type)}
                       type="radio"
                     />
-                    <Icon />
+                  {React.createElement(Icon as any)}
                     <span>{label}</span>
                     <small>{description}</small>
                   </label>
@@ -220,7 +223,7 @@ function CreateProjectDialog({
               Cancel
             </button>
             <button className={styles.primaryButton} type="submit">
-              Create &amp; open file <TbChevronRight />
+             Create &amp; open file <RightOutlined />
             </button>
           </div>
         </form>
@@ -290,7 +293,7 @@ export default function ProjectHub() {
           <div className={styles.headerRight}>
             <span className={styles.department}>Mechatronics &amp; Robotics</span>
             <button aria-label="Application settings" className={styles.iconButton}>
-              <TbSettings />
+              {React.createElement(TbSettings as any)}
             </button>
             <span className={styles.avatar}>EN</span>
           </div>
@@ -299,14 +302,14 @@ export default function ProjectHub() {
         <div className={styles.shell}>
           <aside className={styles.sidebar}>
             <button className={`${styles.navItem} ${typeFilter === "all" ? styles.navItemActive : ""}`} onClick={() => setTypeFilter("all")}>
-              <TbLayoutGrid /> <span>All CAD files</span>
+              {React.createElement(TbLayoutGrid as any)} <span>All CAD files</span>
               <strong>{projects.length}</strong>
             </button>
             {(["part", "assembly", "drawing"] as CadDocumentType[]).map((type) => {
               const { Icon, label } = documentMeta[type];
               return (
                 <button className={`${styles.navItem} ${typeFilter === type ? styles.navItemActive : ""}`} key={type} onClick={() => setTypeFilter(type)}>
-                  <Icon /> <span>{label} files</span>
+                  {React.createElement(Icon as any)} <span>{label} files</span>
                   <strong>{projects.filter((project) => project.documents[0]?.type === type).length}</strong>
                 </button>
               );
@@ -314,10 +317,10 @@ export default function ProjectHub() {
             <div className={styles.sidebarDivider} />
             <p className={styles.sidebarLabel}>RESOURCES</p>
             <button className={styles.navItem}>
-              <TbFolder /> <span>Templates</span>
+              {React.createElement(TbFolder as any)} <span>Templates</span>
             </button>
             <div className={styles.storageCard}>
-              <span className={styles.storageIcon}><TbBox /></span>
+              <span className={styles.storageIcon}>{React.createElement(TbBox as any)}</span>
               <strong>Local workspace</strong>
               <p>Standalone CAD files are saved in this browser during foundation development.</p>
               <div><span /></div>
@@ -333,13 +336,13 @@ export default function ProjectHub() {
                 <p>Create Parts first, open them in Assemblies, then prepare Drawings.</p>
               </div>
               <button className={styles.primaryButton} onClick={() => setCreateOpen(true)}>
-                <TbPlus /> New CAD file
+                {React.createElement(TbPlus as any)} New CAD file
               </button>
             </div>
 
             <div className={styles.controls}>
               <label className={styles.searchBox}>
-                <TbSearch />
+                {React.createElement(TbSearch as any)}
                 <input
                   aria-label="Search CAD files"
                   onChange={(event) => setQuery(event.target.value)}
@@ -348,7 +351,7 @@ export default function ProjectHub() {
                 />
                 {query && (
                   <button aria-label="Clear search" onClick={() => setQuery("")}>
-                    <TbX />
+                    <CloseOutlined />
                   </button>
                 )}
               </label>
@@ -373,7 +376,7 @@ export default function ProjectHub() {
                     className={styles.newProjectCard}
                     onClick={() => setCreateOpen(true)}
                   >
-                    <span><TbPlus /></span>
+                    <span>{React.createElement(TbPlus as any)}</span>
                     <strong>Create new CAD file</strong>
                     <small>Standalone Part, Assembly, or Drawing</small>
                   </button>
@@ -394,15 +397,15 @@ export default function ProjectHub() {
                         <div className={styles.projectInfo}>
                           <div className={styles.projectNameRow}>
                             <h3>{project.name}</h3>
-                            <TbChevronRight />
+                            <RightOutlined />
                           </div>
                           <div className={styles.projectMeta}>
-                            <span><Icon /> {label}</span>
+                            <span>{React.createElement(Icon as any)} {label}</span>
                             <span>{fileExtension[initialType]}</span>
                             <span>{project.unit}</span>
                           </div>
                           <div className={styles.updatedAt}>
-                            <TbClock /> Updated {formatUpdatedAt(project.updatedAt)}
+                            {React.createElement(TbClock as any)} Updated {formatUpdatedAt(project.updatedAt)}
                           </div>
                         </div>
                       </article>
@@ -411,7 +414,7 @@ export default function ProjectHub() {
                 </div>
               ) : (
                 <div className={styles.emptyState}>
-                  <TbSearch />
+                  {React.createElement(TbSearch as any)}
                   <h3>No CAD files match “{query}”</h3>
                   <p>Try another file name, file type, or clear the search.</p>
                   <button className={styles.secondaryButton} onClick={() => setQuery("")}>

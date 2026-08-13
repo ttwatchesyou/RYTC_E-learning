@@ -1,8 +1,7 @@
 // src/pages/Linuxsim/index.tsx
 import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
-import styled, { keyframes } from "styled-components";
-import MainLayout from "@/components/MainLayout";
+import styled, { keyframes, createGlobalStyle } from "styled-components";
 import { Button, Tag, Tooltip, Input, Badge, Card } from "antd";
 import {
   PoweroffOutlined,
@@ -22,15 +21,44 @@ import {
 } from "@ant-design/icons";
 
 // ---------------------------------------------------------
+// 🌍 GLOBAL STYLES (ลบขอบขาวรอบจอ 100%)
+// ---------------------------------------------------------
+const GlobalStyle = createGlobalStyle`
+  body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+    background-color: #09090b !important; /* พื้นดำสนิท */
+    overflow-x: hidden;
+  }
+  #__next {
+    min-height: 100vh;
+  }
+` as unknown as React.ComponentType<any>;
+
+// ---------------------------------------------------------
 // 🎭 ANIMATIONS & STYLED COMPONENTS
 // ---------------------------------------------------------
 
 const spin = keyframes` 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } `;
 
+// แทนที่ MainLayout ด้วย FullScreenPage ที่กางเต็มจอ
+const FullScreenPage = styled.div`
+  min-height: 100vh;
+  background-color: #09090b; /* พื้นหลังสีดำเข้มแบบขอบจอมอนิเตอร์ */
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+`;
+
 const Container = styled.div`
+  width: 100%;
+  max-width: 1600px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   font-family: "Prompt", sans-serif;
 `;
 
@@ -256,7 +284,6 @@ export default function ComprehensiveLinuxSimulator() {
 
   const totalExp = missions.filter(m => m.completed).reduce((sum, m) => sum + m.exp, 0);
 
-  // Clock
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -267,10 +294,8 @@ export default function ComprehensiveLinuxSimulator() {
     return () => clearInterval(intv);
   }, []);
 
-  // Auto Scroll Terminal
   useEffect(() => { if (terminalRef.current) terminalRef.current.scrollTop = terminalRef.current.scrollHeight; }, [history]);
 
-  // Save Editor Content
   const handleSaveEditorContent = () => {
     if (editingFileId) {
       setVfs((prev) =>
@@ -281,16 +306,14 @@ export default function ComprehensiveLinuxSimulator() {
     }
   };
 
-  // ✅ แก้ไขปัญหา Boot Screen ค้าง (แยก Timer ให้ชัดเจน)
   const handlePowerButton = () => {
     if (powerState === "on") {
       setPowerState("off");
-      setWindows([]); // เคลียร์หน้าต่างทิ้งให้หมดตอนปิดเครื่อง
+      setWindows([]);
     } else if (powerState === "off") {
       setPowerState("boot");
       setTimeout(() => {
         setPowerState("on");
-        // คืนค่าหน้าต่างตั้งต้นตอนเปิดเครื่อง
         setWindows([
           { id: "term_1", title: "student@mecharayong-os: ~", type: "terminal", x: 50, y: 40, w: 680, h: 440, zIndex: 10, isMinimized: false },
           { id: "academy_1", title: "Mecha-Academy E-Learning", type: "academy", x: 220, y: 80, w: 720, h: 480, zIndex: 11, isMinimized: false },
@@ -405,7 +428,6 @@ export default function ComprehensiveLinuxSimulator() {
       setHistory(p => [...p, { type: "cmd", command: rawCmd, dirPath: currentPath.replace("/home/student", "~") }, { type: "out", text, styleClass: style }]);
     };
 
-    // 1. NAVIGATION
     if (mCmd === "pwd") addOut(currentPath);
     else if (mCmd === "cd") {
       const target = resolvePath(currentPath, args[1] || "~");
@@ -428,7 +450,6 @@ export default function ComprehensiveLinuxSimulator() {
         addOut(<div dangerouslySetInnerHTML={{ __html: out }} />);
       }
     }
-    // 2. FILES
     else if (mCmd === "mkdir") {
       if (!args[1]) addOut("mkdir: missing operand", "error");
       else {
@@ -481,7 +502,6 @@ export default function ComprehensiveLinuxSimulator() {
         addOut(args.slice(1).join(" ").replace(/['"]/g, ""));
       }
     }
-    // 3. SYSTEM SERVICES
     else if (mCmd === "systemctl") {
       if (args[1] === "start" && args[2] === "plc") addOut("PLC Service Online!", "success");
       else if (args[1] === "stop" && args[2] === "plc") addOut("PLC Service Stopped", "info");
@@ -515,7 +535,11 @@ export default function ComprehensiveLinuxSimulator() {
   return (
     <>
       <Head><title>MECHARAYONG LINUX OS 2026 E-Learning</title><link href="/logo/MechaLogo.png" rel="icon" /></Head>
-      <MainLayout userName="Student" rankLevel={1}>
+      
+      {/* แทรก Global Style ตรงนี้เพื่อลบขอบขาว 100% */}
+      <GlobalStyle />
+
+      <FullScreenPage>
         <Container>
           <MonitorFrame>
             <ComputerBar>
@@ -662,7 +686,7 @@ export default function ComprehensiveLinuxSimulator() {
             </ScreenDisplay>
           </MonitorFrame>
         </Container>
-      </MainLayout>
+      </FullScreenPage>
     </>
   );
 }

@@ -19,6 +19,7 @@ import {
 } from "@/features/cad/types";
 import { selectionFromFeature } from "@/features/cad/lib/cadOperations";
 import styles from "./CadWorkspace.module.css";
+import { RightOutlined } from "@ant-design/icons";
 
 const documentIcon = {
   part: TbBox,
@@ -83,7 +84,7 @@ export default function FeatureTree({
             });
           }}
         >
-          {featuresExpanded ? <TbChevronDown /> : <TbChevronRight />}
+          {featuresExpanded ? <TbChevronDown /> : <RightOutlined />}
           <DocumentIcon />
           <span>{project.name}</span>
           <small>{fileExtension[activeDocument.type]}</small>
