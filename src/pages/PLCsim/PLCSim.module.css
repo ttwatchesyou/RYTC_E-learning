@@ -460,6 +460,12 @@
   gap: 4px;
   cursor: pointer;
 }
+.editorToolbar .deleteBoxButton {
+  color: #b42318;
+  background: #fff0ef;
+  border: 1px solid #f2c5c1;
+  border-radius: 4px;
+}
 .ladderCanvas {
   position: relative;
   flex: 1;
@@ -663,6 +669,26 @@
 .ioList .ioOn em {
   color: #07946f;
 }
+
+.diagnosticsPanel {
+  margin-top: 18px;
+  border-top: 1px solid var(--line, #e4e9f1);
+  padding-top: 12px;
+}
+
+.diagnosticsPanel p {
+  margin: 7px 0;
+  padding: 7px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  line-height: 1.35;
+  background: #f5f7fa;
+}
+
+.diagnosticsPanel p b { margin-right: 5px; font-size: 10px; }
+.diagnosticINFO { color: #1769aa; }
+.diagnosticWARNING { color: #9a6700; background: #fff8db !important; }
+.diagnosticERROR, .diagnosticFAULT { color: #b42318; background: #fff0ef !important; }
 
 .hmiWorkspace {
   height: calc(100vh - 110px);
@@ -2274,6 +2300,33 @@
 .ladderCanvas .rungWire,
 .ladderCanvas .selectedRung {
   background-color: transparent !important;
+}
+
+/* The branch starts exactly on the upper/main power line.  It is rendered by
+   this one shape only, so a dropped branch cannot create a duplicate wire. */
+.ladderCanvas .rung.hasBranch .ladderBranch {
+  /* Keep the main line fixed and extend each vertical connector down to the
+     selected branch row. This lets one Rung hold several connected rows. */
+  top: 66px;
+  height: calc(58px + var(--branch-row, 0) * 64px);
+  transform: translateY(0);
+}
+.ladderCanvas .rung.hasBranch .ladderBranch > i {
+  top: calc(54px + var(--branch-row, 0) * 64px);
+}
+.ladderCanvas .rung.hasBranch .branchElement {
+  top: calc(27px + var(--branch-row, 0) * 64px);
+}
+/* When a branch begins at X=0, the left power rail is already its connector.
+   Hide the duplicate border to form the compact PLC diagram shown in the
+   reference: common rail → upper contact / lower contact → right connector. */
+.ladderCanvas .rung.hasBranch .branchUsesLeftRail {
+  border-left-color: transparent;
+}
+
+.ladderCanvas .rung.hasBranch,
+.ladderCanvas .rung.hasBranch .rungWire {
+  height: calc(126px + (var(--branch-depth, 1) - 1) * 64px);
 }
 
 /* Ladder instruction settings and HMI binding */

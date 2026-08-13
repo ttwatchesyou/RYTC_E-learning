@@ -2,8 +2,26 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { message } from "antd";
 
+if (
+  process.env.NODE_ENV === "production" &&
+  !process.env.NEXT_PUBLIC_API_URL
+) {
+  console.warn("Warning: NEXT_PUBLIC_API_URL is not configured for production.");
+}
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+
+const clearClientAuth = () => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  Cookies.remove("token");
+  Cookies.remove("user_role");
+  window.localStorage.removeItem("user");
+  window.localStorage.setItem("logout_event", Date.now().toString());
+};
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -32,9 +50,8 @@ apiClient.interceptors.response.use(
       "เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์";
 
     if (error.response?.status === 401) {
-      Cookies.remove("token");
-      Cookies.remove("user_role");
-      localStorage.removeItem("user");
+      clearClientAuth();
+
       if (
         typeof window !== "undefined" &&
         !window.location.pathname.includes("/login")

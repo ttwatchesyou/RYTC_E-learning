@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { DragEvent, PointerEvent, useEffect, useMemo, useState } from "react";
+import { CSSProperties, DragEvent, PointerEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   HiArrowLeft,
   HiChevronDown,
@@ -21,7 +21,9 @@ import {
   HiOutlineTrash,
 } from "react-icons/hi2";
 import { ExtendedElementType, ExtendedLadderElement, ExtendedLadderRung } from "../../types/plc";
-import { executeScanCycle, getRungWiringIssue, MemoryState } from "../../utils/plcEngine";
+import { getRungWiringIssue, MemoryState } from "../../utils/plcEngine";
+import { PlcEngine } from "../../engine/plcEngine";
+import { PLCBrand, PlcDiagnostic } from "../../types/plc";
 import styles from "./PLCSim.module.css";
 
 // react-icons v5 exposes ReactNode return types that are wider than Next 13's JSX
@@ -171,6 +173,19 @@ const starterRungs: ExtendedLadderRung[] = [
 
 const toolByType = (type: ExtendedElementType) => tools.find((tool) => tool.type === type);
 
+const autoWireRung = (rung: ExtendedLadderRung): ExtendedLadderRung => {
+  const elements = [...rung.mainElements].sort((a, b) => (a.x || 0) - (b.x || 0));
+  const horizontalWires = elements.flatMap((element, index) => {
+    const from = index === 0 ? 0 : (elements[index - 1].x || 0) + 82;
+    const to = element.x || 0;
+    return to > from ? [{ id: `auto-${rung.id}-${index}-${from}`, x: from, width: to - from }] : [];
+  });
+  return { ...rung, mainElements: elements, wires: [...horizontalWires, ...(rung.wires || []).filter((wire) => wire.orientation === "vertical")] };
+};
+
+const overlapsBox = (x: number, width: number, selectionX: number, selectionWidth: number): boolean => x < selectionX + selectionWidth && x + width > selectionX;
+const elementCellWidth = 82;
+
 const createStarterProject = (profile: AddressProfile) => {
   const input = (index: number) => formatDeviceAddress(profile, "input", index);
   const output = (index: number) => formatDeviceAddress(profile, "output", index);
@@ -283,6 +298,7 @@ export default function PLCSimPage() {
   const [scanCount, setScanCount] = useState(0);
   const [scanTimeMs, setScanTimeMs] = useState(0);
   const [plcMessage, setPlcMessage] = useState("พร้อมตรวจสอบและ Download โปรแกรม");
+  const [diagnosticEntries, setDiagnosticEntries] = useState<PlcDiagnostic[]>([]);
   const [rungs, setRungs] = useState<ExtendedLadderRung[]>(starterRungs);
   const [memory, setMemory] = useState<MemoryState>({ "I0.0": false, "I0.1": false, "Q0.0": false, "Q0.1": false });
   const [selectedRung, setSelectedRung] = useState("rung-1");
@@ -301,6 +317,20 @@ export default function PLCSimPage() {
     { id: "w3", kind: "button", address: "I0.0", label: "START", x: 70, y: 135, width: 170, height: 120, color: "#0e5d98" },
     { id: "w4", kind: "button", address: "I0.1", label: "STOP", x: 270, y: 135, width: 170, height: 120, color: "#e04b45" },
   ]);
+  // The editor state is a design document. PlcEngine owns the live runtime memory
+  // and only publishes snapshots back to React for display.
+  const runtimeRef = useRef<PlcEngine | null>(null);
+  const vendorForRuntime = (id: string): PLCBrand => id === "UNIVERSAL" ? "IEC" : id as PLCBrand;
+  const applyRuntimeSnapshot = () => {
+    const snapshot = runtimeRef.current?.snapshot();
+    if (!snapshot) return;
+    setRungs(snapshot.rungs);
+    setMemory(snapshot.memory);
+    setScanCount(snapshot.scanCount);
+    setScanTimeMs(snapshot.scanTimeMs);
+    setPlcMode(snapshot.mode);
+    setDiagnosticEntries(snapshot.diagnostics);
+  };
 
   const activeBrand = brands.find((brand) => brand.id === brandId);
   const activeIdentity = activeBrand ? workspaceIdentity[activeBrand.id] : workspaceIdentity.UNIVERSAL;
@@ -323,6 +353,8 @@ export default function PLCSimPage() {
 
   const selectBrand = (brand: PLCBrandOption) => {
     const project = createStarterProject(brand.profile);
+    runtimeRef.current = new PlcEngine(vendorForRuntime(brand.id));
+    runtimeRef.current.loadProgram(project.rungs, project.memory);
     setBrandId(brand.id);
     setRungs(project.rungs);
     setMemory(project.memory);
@@ -343,6 +375,7 @@ export default function PLCSimPage() {
   const loadLesson = (lesson: Lesson) => {
     if (!activeBrand) return;
     const project = createLessonProject(lesson.id, activeBrand.profile);
+    runtimeRef.current?.loadProgram(project.rungs, project.memory);
     setIsRunning(false);
     setIsDownloaded(false);
     setPlcMode("PROGRAM");
@@ -365,25 +398,19 @@ export default function PLCSimPage() {
   useEffect(() => {
     if (!isRunning) return;
     const interval = window.setInterval(() => {
-      setMemory((currentMemory) => {
-        const startedAt = performance.now();
-        const result = executeScanCycle(rungs, currentMemory);
-        setRungs(result.updatedRungs);
-        setScanCount((count) => count + 1);
-        setScanTimeMs(Math.max(0.1, performance.now() - startedAt));
-        return result.updatedMemory;
-      });
+      runtimeRef.current?.scan(0.1);
+      applyRuntimeSnapshot();
     }, 100);
     return () => window.clearInterval(interval);
-  }, [isRunning, rungs]);
+  }, [isRunning]);
 
   const validateProgram = () => {
     const errors: string[] = [];
     rungs.forEach((rung, index) => {
       const wiringIssue = getRungWiringIssue(rung);
       if (wiringIssue) errors.push(`Rung ${index + 1} สายไฟขาด: ${wiringIssue}`);
-      const outputs = rung.mainElements.filter((item) => ["COIL", "SET", "RSET", "DIFU", "DIFD"].includes(item.type));
-      if (outputs.length > 0 && !["COIL", "SET", "RSET", "DIFU", "DIFD"].includes(rung.mainElements[rung.mainElements.length - 1].type)) errors.push(`Rung ${index + 1} ต้องวาง Output ไว้ท้ายวงจร`);
+      const mainHasOutput = rung.mainElements.some((item) => ["COIL", "SET", "RSET", "DIFU", "DIFD"].includes(item.type));
+      if (mainHasOutput && !["COIL", "SET", "RSET", "DIFU", "DIFD"].includes(rung.mainElements[rung.mainElements.length - 1].type)) errors.push(`Rung ${index + 1} ต้องวาง Output ไว้ท้ายวงจร`);
       rung.mainElements.forEach((item) => { if (!item.rawAddress.trim()) errors.push(`Rung ${index + 1} มี Address ว่าง`); });
     });
     return errors;
@@ -391,11 +418,14 @@ export default function PLCSimPage() {
 
   const verifyProgram = () => {
     const errors = validateProgram();
+    const runtimeVerification = runtimeRef.current?.loadProgram(rungs, memory);
+    if (runtimeVerification && !runtimeVerification.valid) errors.push(...runtimeVerification.diagnostics.map((item) => item.message));
     if (errors.length > 0) {
       setPlcMode("FAULT");
       setPlcMessage(`ตรวจพบ ${errors.length} ข้อผิดพลาด: ${errors[0]}`);
       return false;
     }
+    if (isDownloaded) runtimeRef.current?.download();
     setPlcMode(isDownloaded ? "STOP" : "PROGRAM");
     setPlcMessage(`ตรวจสอบสำเร็จ · ${rungs.length} Rungs · พร้อม Download`);
     return true;
@@ -403,47 +433,31 @@ export default function PLCSimPage() {
 
   const downloadProgram = () => {
     setIsRunning(false);
-    if (!verifyProgram()) return;
+    if (!runtimeRef.current) return;
+    runtimeRef.current.loadProgram(rungs, memory);
+    const result = runtimeRef.current.download();
+    if (!result.valid) { applyRuntimeSnapshot(); setPlcMessage(`Virtual PLC Download ไม่สำเร็จ · ${result.diagnostics[0]?.message || "โปรแกรมไม่ถูกต้อง"}`); return; }
     setIsDownloaded(true);
-    setPlcMode("STOP");
-    setScanCount(0);
-    setPlcMessage("Download สำเร็จ · CPU อยู่ในโหมด STOP");
+    applyRuntimeSnapshot();
+    setPlcMessage("Virtual PLC Download สำเร็จ · CPU อยู่ในโหมด STOP");
   };
 
   const startPlc = () => {
-    const errors = validateProgram();
-    if (errors.length > 0) {
-      setPlcMode("FAULT");
-      setPlcMessage(`RUN ไม่ได้ · ${errors[0]}`);
+    if (!isDownloaded || !runtimeRef.current) {
+      setPlcMessage("กรุณา VERIFY และ Virtual Download โปรแกรมก่อน RUN");
       return;
     }
-    if (!isDownloaded) {
-      setIsDownloaded(true);
-      setScanCount(0);
-    }
-    setPlcMode("RUN");
+    if (!runtimeRef.current.run()) { applyRuntimeSnapshot(); setPlcMessage("RUN ไม่ได้ · พบข้อผิดพลาดในโปรแกรม"); return; }
+    applyRuntimeSnapshot();
     setIsRunning(true);
-    setPlcMessage(isDownloaded ? "CPU RUN · กำลังประมวลผล Scan cycle" : "Auto Download สำเร็จ · CPU RUN");
+    setPlcMessage("CPU RUN · กำลังประมวลผล Scan cycle");
   };
 
   const stopPlc = () => {
     setIsRunning(false);
-    setMemory((current) => Object.fromEntries(Object.keys(current).map((address) => [address, false])) as MemoryState);
-    setRungs((items) => items.map((rung) => ({
-      ...rung,
-      mainElements: rung.mainElements.map((item) => ({
-        ...item,
-        state: false,
-        currentTime: 0,
-        currentCount: 0,
-        lastRungPower: false,
-      })),
-      branches: rung.branches?.map((branch) => ({ ...branch, elements: branch.elements.map((item) => ({ ...item, state: false })) })),
-    })));
-    setScanCount(0);
-    setScanTimeMs(0);
-    setPlcMode(isDownloaded ? "STOP" : "PROGRAM");
-    setPlcMessage("CPU STOP · Runtime, I/O, Timer และ Counter กลับสู่ค่าเริ่มต้น");
+    runtimeRef.current?.stop();
+    applyRuntimeSnapshot();
+    setPlcMessage("CPU STOP · Runtime ถูกพักไว้และคงค่า Memory ปัจจุบัน");
   };
 
   const singleScan = () => {
@@ -451,27 +465,21 @@ export default function PLCSimPage() {
       setPlcMessage("Single Scan ใช้ได้หลัง Download และอยู่ในโหมด STOP");
       return;
     }
-    const startedAt = performance.now();
-    const result = executeScanCycle(rungs, memory);
-    setRungs(result.updatedRungs);
-    setMemory(result.updatedMemory);
-    setScanCount((count) => count + 1);
-    setScanTimeMs(Math.max(0.1, performance.now() - startedAt));
+    runtimeRef.current?.scan(0.1);
+    applyRuntimeSnapshot();
     setPlcMessage("ประมวลผล Single Scan สำเร็จ");
   };
 
   const resetCpu = () => {
     setIsRunning(false);
-    setMemory((current) => Object.fromEntries(Object.keys(current).map((address) => [address, false])) as MemoryState);
-    setRungs((items) => items.map((rung) => ({ ...rung, mainElements: rung.mainElements.map((item) => ({ ...item, state: false, currentTime: 0, currentCount: 0, lastRungPower: false })), branches: rung.branches?.map((branch) => ({ ...branch, elements: branch.elements.map((item) => ({ ...item, state: false })) })) })));
-    setScanCount(0);
-    setScanTimeMs(0);
-    setPlcMode(isDownloaded ? "STOP" : "PROGRAM");
+    runtimeRef.current?.reset();
+    applyRuntimeSnapshot();
     setPlcMessage("Reset CPU และ Memory เรียบร้อย");
   };
 
   const toggleInputAddress = (address: string) => {
     const nextState = !Boolean(memory[address]);
+    runtimeRef.current?.setInput(address, nextState);
     setMemory((current) => ({ ...current, [address]: nextState }));
     setPlcMessage(`Input ${address} = ${nextState ? "ON" : "OFF"}${isRunning ? "" : " · กด RUN เพื่อประมวลผล Output"}`);
   };
@@ -539,7 +547,13 @@ export default function PLCSimPage() {
       presetCount: tool.type === "CNT" ? 10 : undefined,
       x,
     };
-    setRungs((items) => items.map((rung) => rung.id === rungId ? { ...rung, mainElements: [...rung.mainElements, newElement].sort((a, b) => (a.x || 0) - (b.x || 0)) } : rung));
+    setRungs((items) => items.map((rung) => {
+      if (rung.id !== rungId) return rung;
+      // A dropped instruction owns its cell: anything it covers is replaced,
+      // while the continuous power wire is rebuilt around it.
+      const remaining = rung.mainElements.filter((element) => !overlapsBox(element.x || 0, elementCellWidth, x, elementCellWidth));
+      return autoWireRung({ ...rung, mainElements: [...remaining, newElement] });
+    }));
     setMemory((current) => ({ ...current, [newElement.rawAddress]: false }));
     setSelectedElementId({ rungId, elementId: newElement.id });
   };
@@ -560,35 +574,66 @@ export default function PLCSimPage() {
     const bounds = event.currentTarget.getBoundingClientRect();
     const rawX = Math.max(0, Math.min(bounds.width - 84, event.clientX - bounds.left - 42));
     const dropX = Math.round(rawX / 84) * 84;
+    const dropBelowMainLine = event.clientY - bounds.top > 54;
+    const branchRow = Math.max(0, Math.floor((event.clientY - bounds.top - 54) / 64));
     setSelectedRung(targetRungId);
     setLadderCursorX(dropX + 84);
 
     if (data.kind === "new-element") {
       const tool = toolByType(data.type);
+      if (tool && dropBelowMainLine) {
+        const target = rungs.find((rung) => rung.id === targetRungId);
+        const branch = target?.branches?.find((item) => (item.row || 0) === branchRow && dropX >= (item.startX || 0) && dropX < (item.endX || 0));
+        if (branch) {
+          const profile = activeBrand?.profile || brands[0].profile;
+          const index = branch.elements.length + 1;
+          const isOutput = ["COIL", "SET", "RSET", "DIFU", "DIFD"].includes(tool.type);
+          const branchElement: ExtendedLadderElement = { id: `branch-e-${Date.now()}`, type: tool.type, rawAddress: isOutput ? formatDeviceAddress(profile, "output", index) : formatDeviceAddress(profile, "input", index), label: tool.type, x: dropX, presetTime: tool.type === "TIM" ? 5 : undefined, presetCount: tool.type === "CNT" ? 10 : undefined };
+          setRungs((items) => items.map((rung) => rung.id === targetRungId ? {
+            ...rung,
+            branches: rung.branches?.map((item) => item.id === branch.id ? {
+              ...item,
+              // Branch cells follow the same replace rule as the main line.
+              elements: [...item.elements.filter((element) => !overlapsBox(element.x || 0, elementCellWidth, dropX, elementCellWidth)), branchElement],
+            } : item),
+          } : rung));
+          setMemory((current) => ({ ...current, [branchElement.rawAddress]: false }));
+          setSelectedElementId(null);
+          setPlcMessage("วาง Instruction ใน Parallel Branch แล้ว · สายแนวตั้งเชื่อมเส้นทาง Logic อยู่");
+          return;
+        }
+      }
       if (tool) addElement(tool, targetRungId, dropX);
       return;
     }
     if (data.kind === "new-wire") {
       setRungs((items) => items.map((rung) => rung.id === targetRungId ? {
         ...rung,
-        wires: [...(rung.wires || []), { id: `wire-${Date.now()}`, x: dropX, width: 84 }],
+        // Replace the selected wire cell instead of stacking duplicate lines.
+        wires: [...(rung.wires || []).filter((wire) => wire.orientation === "vertical" || !overlapsBox(wire.x, wire.width, dropX, 84)), { id: `wire-${Date.now()}`, x: dropX, width: 84 }],
       } : rung));
       return;
     }
     if (data.kind === "new-vertical-wire") {
       setRungs((items) => items.map((rung) => rung.id === targetRungId ? {
         ...rung,
-        wires: [...(rung.wires || []), { id: `wire-v-${Date.now()}`, x: dropX, width: 2, orientation: "vertical", y: 32, height: 64 }],
+        // A vertical wire is a real parallel path anchor. Drop instructions in
+        // the lower half of this rung to place them on the connected branch.
+        // ladderBranch renders the two vertical connectors itself. Keeping no
+        // extra vertical wire records prevents duplicate/double-thick lines.
+        branches: [...(rung.branches || []).filter((branch) => (branch.row || 0) !== branchRow || !overlapsBox(branch.startX || 0, (branch.endX || 0) - (branch.startX || 0), dropX, 168)), { id: `branch-${Date.now()}`, startX: dropX, endX: dropX + 168, row: branchRow, elements: [] }],
+        wires: (rung.wires || []).filter((wire) => wire.orientation !== "vertical" || !overlapsBox(wire.x, 2, dropX, 168)),
       } : rung));
+      setPlcMessage("สร้างสายแนวตั้งและ Parallel Branch แล้ว · วาง Instruction ในส่วนล่างของ Rung ได้");
       return;
     }
     if (data.kind === "element") {
       const source = rungs.find((rung) => rung.id === data.rungId)?.mainElements.find((element) => element.id === data.elementId);
       if (!source) return;
       setRungs((items) => items.map((rung) => {
-        const withoutMoved = rung.mainElements.filter((element) => element.id !== data.elementId);
+        const withoutMoved = rung.mainElements.filter((element) => element.id !== data.elementId && !overlapsBox(element.x || 0, elementCellWidth, dropX, elementCellWidth));
         return rung.id === targetRungId
-          ? { ...rung, mainElements: [...withoutMoved, { ...source, x: dropX }].sort((a, b) => (a.x || 0) - (b.x || 0)) }
+          ? autoWireRung({ ...rung, mainElements: [...withoutMoved, { ...source, x: dropX }].sort((a, b) => (a.x || 0) - (b.x || 0)) })
           : { ...rung, mainElements: withoutMoved };
       }));
       return;
@@ -627,8 +672,24 @@ export default function PLCSimPage() {
 
   const removeElement = (rungId: string, elementId: string) => {
     markProgramDirty();
-    setRungs((items) => items.map((rung) => rung.id === rungId ? { ...rung, mainElements: rung.mainElements.filter((element) => element.id !== elementId) } : rung));
+    setRungs((items) => items.map((rung) => rung.id === rungId ? autoWireRung({ ...rung, mainElements: rung.mainElements.filter((element) => element.id !== elementId) }) : rung));
     if (selectedElementId?.elementId === elementId) setSelectedElementId(null);
+  };
+
+  const deleteBoxSelection = () => {
+    if (!ladderSelection) return;
+    markProgramDirty();
+    const selection = ladderSelection;
+    setRungs((items) => items.map((rung) => {
+      if (rung.id !== selection.rungId) return rung;
+      const mainElements = rung.mainElements.filter((element) => !overlapsBox(element.x || 0, 82, selection.x, selection.width));
+      const wires = (rung.wires || []).filter((wire) => wire.orientation === "vertical" ? !overlapsBox(wire.x, 2, selection.x, selection.width) : false);
+      const branches = rung.branches?.map((branch) => ({ ...branch, elements: selection.height > 64 ? branch.elements.filter((element) => !overlapsBox(element.x || 0, 82, selection.x, selection.width)) : branch.elements })).filter((branch) => branch.elements.length || !overlapsBox(branch.startX || 0, (branch.endX || 0) - (branch.startX || 0), selection.x, selection.width));
+      return autoWireRung({ ...rung, mainElements, wires, branches });
+    }));
+    setSelectedElementId(null);
+    setLadderSelection(null);
+    setPlcMessage("ลบรายการภายใน Box แล้ว · สายหลักถูกเชื่อมใหม่อัตโนมัติ");
   };
 
   const updateLadderElement = (changes: Partial<ExtendedLadderElement>) => {
@@ -704,6 +765,17 @@ export default function PLCSimPage() {
     markProgramDirty();
     setRungs((items) => items.map((rung) => rung.id === rungId ? { ...rung, wires: (rung.wires || []).filter((wire) => wire.id !== wireId) } : rung));
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.key === "Delete" || event.key === "Backspace") && ladderSelection && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLSelectElement)) {
+        event.preventDefault();
+        deleteBoxSelection();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [ladderSelection, rungs]);
 
   const addWidget = (kind: HmiWidget["kind"]) => {
     const profile = activeBrand?.profile || brands[0].profile;
@@ -898,7 +970,7 @@ export default function PLCSimPage() {
           </aside>
 
           <section className={styles.editorArea}>
-            <div className={styles.editorToolbar}><div className={styles.cpuMessage}><b>Main Program</b><span> / {plcMessage}</span></div><div><button onClick={verifyProgram}>✓ Verify</button><button onClick={singleScan}>↦ Single Scan</button><button onClick={resetCpu}><Icon.Refresh /> Reset CPU</button></div></div>
+            <div className={styles.editorToolbar}><div className={styles.cpuMessage}><b>Main Program</b><span> / {plcMessage}</span></div><div>{ladderSelection && <button className={styles.deleteBoxButton} onClick={deleteBoxSelection} title="ลบอุปกรณ์และสายภายในกรอบที่ลากเลือก (Delete)"><Icon.Trash /> Delete Box</button>}<button onClick={verifyProgram}>✓ Verify</button><button onClick={singleScan}>↦ Single Scan</button><button onClick={resetCpu}><Icon.Refresh /> Reset CPU</button></div></div>
             <div className={`${styles.ladderCanvas} ${activeBrand?.id === "OMRON" ? styles.omronCanvas : ""}`}>
               <div className={styles.programStrip}>
                 <span className={styles.programIndex}>0</span>
@@ -906,13 +978,13 @@ export default function PLCSimPage() {
               </div>
               <div className={styles.railLabels}><span>L+</span><span>N</span></div>
               {rungs.map((rung, rungIndex) => (
-                <div key={rung.id} className={`${styles.rung} ${rung.branches?.length ? styles.hasBranch : ""} ${rung.mainElements.some((element) => ["TIM", "CNT"].includes(element.type)) ? styles.hasTimingElement : ""} ${selectedRung === rung.id ? styles.selectedRung : ""} ${getRungWiringIssue(rung) ? styles.wiringFault : ""}`} onClick={() => { setSelectedRung(rung.id); setSelectedElementId(null); }}>
+                <div key={rung.id} style={{ "--branch-depth": Math.max(1, ...(rung.branches || []).map((branch) => (branch.row || 0) + 1)) } as CSSProperties} className={`${styles.rung} ${rung.branches?.length ? styles.hasBranch : ""} ${rung.mainElements.some((element) => ["TIM", "CNT"].includes(element.type)) ? styles.hasTimingElement : ""} ${selectedRung === rung.id ? styles.selectedRung : ""} ${getRungWiringIssue(rung) ? styles.wiringFault : ""}`} onClick={() => { setSelectedRung(rung.id); setSelectedElementId(null); }}>
                   <span className={styles.rungNumber}>{String(rungIndex + 1).padStart(2, "0")}</span>
                   {getRungWiringIssue(rung) && <span className={styles.wiringWarning}>⚠ สายไฟไม่ต่อเนื่อง: {getRungWiringIssue(rung)}</span>}
                   <button className={styles.deleteRung} onClick={(event) => { event.stopPropagation(); removeRung(rung.id); }} title="ลบ Rung" aria-label={`ลบ Rung ${rungIndex + 1}`}><Icon.Trash /></button>
-                  <div className={styles.rungWire} onPointerDown={(event) => startLadderSelection(event, rung.id)} onDragOver={(event) => { event.preventDefault(); event.dataTransfer.dropEffect = "move"; }} onDrop={(event) => handleRungDrop(event, rung.id)}>
+                  <div className={styles.rungWire} title="ลากบนพื้นที่ว่างเพื่อเลือกแบบ Box · กด Delete เพื่อลบ · ลาก Instruction ลงใต้เส้นหลักเพื่อวางใน Parallel Branch" onPointerDown={(event) => startLadderSelection(event, rung.id)} onDragOver={(event) => { event.preventDefault(); event.dataTransfer.dropEffect = "move"; }} onDrop={(event) => handleRungDrop(event, rung.id)}>
                     {ladderSelection?.rungId === rung.id && !selectedElementId && <span className={styles.ladderSelection} style={{ left: ladderSelection.x, width: ladderSelection.width, height: ladderSelection.height }}><i /></span>}
-                    {rung.branches?.map((branch) => <div key={branch.id} className={`${styles.ladderBranch} ${isRunning && branch.elements.every((element) => element.state) ? styles.branchPowered : ""}`} style={{ left: branch.startX || 0, width: (branch.endX || 168) - (branch.startX || 0) }}>
+                    {rung.branches?.map((branch) => <div key={branch.id} className={`${styles.ladderBranch} ${(branch.startX || 0) === 0 ? styles.branchUsesLeftRail : ""} ${isRunning && branch.elements.every((element) => element.state) ? styles.branchPowered : ""}`} style={{ left: branch.startX || 0, width: (branch.endX || 168) - (branch.startX || 0), "--branch-row": branch.row || 0 } as CSSProperties}>
                       <i />
                       {branch.elements.map((element) => <span key={element.id} className={styles.branchElement} style={{ left: (element.x || 84) - (branch.startX || 0) }}><small>{element.rawAddress}</small><code>{getInstructionSymbol(toolByType(element.type)) || element.type}</code><em>{element.label}</em></span>)}
                     </div>)}
@@ -976,8 +1048,13 @@ export default function PLCSimPage() {
             <div className={styles.ioList}>{addresses.map((address) => {
               const isInput = Boolean(activeBrand && address.startsWith(activeBrand.profile.input));
               const enabled = Boolean(memory[address]);
-              return <button key={address} className={enabled ? styles.ioOn : ""} disabled={!isInput} onClick={() => setMemory((current) => ({ ...current, [address]: !current[address] }))}><span className={styles.ioDot} /><span><b>{address}</b><small>{isInput ? "Digital input" : "Digital output"}</small></span><em>{enabled ? "ON" : "OFF"}</em></button>;
+              return <button key={address} className={enabled ? styles.ioOn : ""} disabled={!isInput} onClick={() => toggleInputAddress(address)}><span className={styles.ioDot} /><span><b>{address}</b><small>{isInput ? "Digital input" : "Digital output"}</small></span><em>{enabled ? "ON" : "OFF"}</em></button>;
             })}</div>
+            <div className={styles.diagnosticsPanel} aria-live="polite">
+              <div className={styles.panelHeading}><span>DIAGNOSTICS</span><small>{diagnosticEntries.length} events</small></div>
+              {diagnosticEntries.slice(0, 4).map((entry, index) => <p key={`${entry.timestamp}-${index}`} className={styles[`diagnostic${entry.level}`]}><b>{entry.level}</b> {entry.message}</p>)}
+              {!diagnosticEntries.length && <p className={styles.diagnosticINFO}><b>INFO</b> พร้อมตรวจสอบโปรแกรม</p>}
+            </div>
           </aside>
         </main>
       ) : (
@@ -1012,13 +1089,13 @@ export default function PLCSimPage() {
                     >
                       <button className={styles.dragHandle} onPointerDown={(event) => startWidgetDrag(event, widget)} title="ลากเพื่อย้ายตำแหน่ง">⠿</button>
                       {widget.kind === "label" && <div className={styles.hmiLabel} style={{ color: widget.color }}>{widget.label}</div>}
-                      {widget.kind === "switch" && <button className={styles.hmiSwitch} onClick={() => widget.address && setMemory((current) => ({ ...current, [widget.address!]: !current[widget.address!] }))}><span className={on ? styles.switchOn : ""} style={on ? { backgroundColor: widget.color } : undefined}><i /></span><b>{widget.label}</b><small>{widget.address}</small></button>}
+                      {widget.kind === "switch" && <button className={styles.hmiSwitch} onClick={() => widget.address && toggleInputAddress(widget.address)}><span className={on ? styles.switchOn : ""} style={on ? { backgroundColor: widget.color } : undefined}><i /></span><b>{widget.label}</b><small>{widget.address}</small></button>}
                       {widget.kind === "lamp" && <div className={styles.hmiWidget}><span className={`${styles.bigLamp} ${on ? styles.bigLampOn : ""}`} style={on ? { backgroundColor: widget.color } : undefined} /><b>{widget.label}</b><small>{widget.address}</small></div>}
                       {widget.kind === "gauge" && <div className={styles.hmiWidget}><div className={styles.gauge} style={{ borderColor: widget.color }}><span>{on ? "100" : "0"}%</span></div><b>{widget.label}</b><small>{widget.address}</small></div>}
                       {widget.kind === "numeric" && <div className={styles.hmiNumeric}><span style={{ color: widget.color }}>{on ? "100.0" : "0.0"}</span><b>{widget.label}</b><small>{widget.address}</small></div>}
                       {widget.kind === "tank" && <div className={styles.hmiTank}><div className={styles.tankBody}><i style={{ height: on ? "78%" : "18%", backgroundColor: widget.color }} /><em>{on ? "78" : "18"}%</em></div><b>{widget.label}</b><small>{widget.address}</small></div>}
                       {widget.kind === "alarm" && <div className={`${styles.hmiAlarm} ${on ? styles.alarmOn : ""}`} style={on ? { borderColor: widget.color } : undefined}><strong style={on ? { backgroundColor: widget.color } : undefined}>!</strong><span><b>{widget.label}</b><small>{on ? "ACTIVE" : "NORMAL"} · {widget.address}</small></span></div>}
-                      {widget.kind === "button" && <button className={`${styles.hmiPush} ${on ? styles.hmiPushOn : ""}`} onClick={() => widget.address && setMemory((current) => ({ ...current, [widget.address!]: !current[widget.address!] }))}><span style={{ backgroundColor: widget.color }}>{widget.label}</span><small>{widget.address}</small></button>}
+                      {widget.kind === "button" && <button className={`${styles.hmiPush} ${on ? styles.hmiPushOn : ""}`} onClick={() => widget.address && toggleInputAddress(widget.address)}><span style={{ backgroundColor: widget.color }}>{widget.label}</span><small>{widget.address}</small></button>}
                     </div>
                   );
                 })}
