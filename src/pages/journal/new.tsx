@@ -104,7 +104,7 @@ export default function NewJournal() {
               }}
             >
               <h2 style={{ margin: 0, color: "#0f172a" }}>
-                <FormOutlined style={{ color: "#c5a059" }} />{" "}
+                <FormOutlined style={{ color: "#eab308" }} />{" "}
                 บันทึกรายงานประจำวัน (WIL Journal)
               </h2>
               <Button
@@ -174,8 +174,8 @@ export default function NewJournal() {
                 block
                 size="large"
                 style={{
-                  background: "#0a192f",
-                  border: "1px solid #d4af37",
+                  background: "#1d4ed8",
+                  border: "1px solid #facc15",
                   borderRadius: 12,
                   height: 48,
                   marginTop: 12,

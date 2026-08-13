@@ -24,7 +24,7 @@ const floatBlob = keyframes`
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  background: radial-gradient(circle at 50% 0%, #0f172a 0%, #030712 100%);
+  background: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #071a42 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,8 +42,8 @@ const AmbientBlobNavy = styled.div`
   height: clamp(300px, 50vw, 650px);
   background: radial-gradient(
     circle,
-    rgba(30, 58, 138, 0.45) 0%,
-    rgba(10, 25, 47, 0) 70%
+    rgba(37, 99, 235, 0.5) 0%,
+    rgba(29, 78, 216, 0) 70%
   );
   border-radius: 50%;
   filter: blur(80px);
@@ -59,8 +59,8 @@ const AmbientBlobGold = styled.div`
   height: clamp(280px, 45vw, 550px);
   background: radial-gradient(
     circle,
-    rgba(212, 175, 55, 0.2) 0%,
-    rgba(10, 25, 47, 0) 70%
+    rgba(250, 204, 21, 0.25) 0%,
+    rgba(29, 78, 216, 0) 70%
   );
   border-radius: 50%;
   filter: blur(90px);
@@ -74,7 +74,7 @@ const RegisterCard = styled.div`
   background: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(28px) saturate(200%);
   border-radius: 28px;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  border: 1px solid rgba(250, 204, 21, 0.5);
   padding: 40px;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
     inset 0 1px 1px rgba(255, 255, 255, 0.2);
@@ -100,8 +100,8 @@ const BrandTitle = styled.h1`
   font-family: "Prompt", sans-serif;
 
   span {
-    color: #c5a059;
-    text-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+    color: #facc15;
+    text-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
   }
 `;
 
@@ -118,7 +118,7 @@ const PasswordRulesContainer = styled.div`
   padding: 12px 16px;
   margin-top: 8px;
   margin-bottom: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(250, 204, 21, 0.4);
 `;
 
 const RuleItem = styled.div<{ $passed: boolean }>`
@@ -138,11 +138,11 @@ const RuleItem = styled.div<{ $passed: boolean }>`
 const SubmitButton = styled(Button)`
   height: 48px !important;
   border-radius: 12px !important;
-  background: linear-gradient(135deg, #d4af37 0%, #c5a059 100%) !important;
+  background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
   border: none !important;
-  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3),
+  box-shadow: 0 8px 20px rgba(250, 204, 21, 0.34),
     inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
-  color: #0a192f !important;
+  color: #172554 !important;
   font-size: 16px !important;
   font-weight: 700 !important;
   width: 100%;
@@ -151,7 +151,7 @@ const SubmitButton = styled(Button)`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(212, 175, 55, 0.5) !important;
+    box-shadow: 0 12px 24px rgba(250, 204, 21, 0.5) !important;
   }
 `;
 
@@ -165,7 +165,7 @@ const BackLink = styled.div`
   color: #94a3b8;
 
   a {
-    color: #d4af37;
+    color: #facc15;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
@@ -201,7 +201,7 @@ const FormThemeWrapper = styled.div`
 
     &:hover,
     &:focus-within {
-      border-color: #d4af37 !important;
+      border-color: #facc15 !important;
     }
   }
 
@@ -327,7 +327,7 @@ export default function Register() {
                     rules={[{ required: true, message: "กรุณากรอกชื่อจริง" }]}
                   >
                     <Input
-                      prefix={<UserOutlined style={{ color: "#c5a059" }} />}
+                      prefix={<UserOutlined style={{ color: "#facc15" }} />}
                       placeholder="สมศักดิ์"
                     />
                   </Form.Item>
@@ -378,7 +378,7 @@ export default function Register() {
                     }
                   >
                     <Input
-                      prefix={<IdcardOutlined style={{ color: "#c5a059" }} />}
+                      prefix={<IdcardOutlined style={{ color: "#facc15" }} />}
                       placeholder={
                         isTeacher
                           ? "ไม่ต้องกรอก (สำหรับนักเรียนเท่านั้น)"
@@ -400,7 +400,7 @@ export default function Register() {
                     ]}
                   >
                     <Input
-                      prefix={<MailOutlined style={{ color: "#c5a059" }} />}
+                      prefix={<MailOutlined style={{ color: "#facc15" }} />}
                       placeholder="user@rayongtech.ac.th"
                     />
                   </Form.Item>
@@ -423,7 +423,7 @@ export default function Register() {
                     }
                   >
                     <Input
-                      prefix={<TeamOutlined style={{ color: "#c5a059" }} />}
+                      prefix={<TeamOutlined style={{ color: "#facc15" }} />}
                       placeholder={
                         isTeacher
                           ? "เช่น ปวช.2/1 (เว้นว่างได้)"
@@ -440,7 +440,7 @@ export default function Register() {
                 rules={[{ required: true, message: "กรุณากรอกรหัสผ่าน" }]}
               >
                 <Input.Password
-                  prefix={<LockOutlined style={{ color: "#c5a059" }} />}
+                  prefix={<LockOutlined style={{ color: "#facc15" }} />}
                   placeholder="กำหนดรหัสผ่าน"
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -502,7 +502,7 @@ export default function Register() {
                 ]}
               >
                 <Input.Password
-                  prefix={<LockOutlined style={{ color: "#c5a059" }} />}
+                  prefix={<LockOutlined style={{ color: "#facc15" }} />}
                   placeholder="กรอกรหัสผ่านซ้ำอีกครั้ง"
                 />
               </Form.Item>

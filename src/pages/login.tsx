@@ -23,9 +23,9 @@ const PageContainer = styled.div`
   min-height: 100vh;
   background: radial-gradient(
     circle at 50% -10%,
-    #e0e7ff 0%,
-    #f8fafc 45%,
-    #f1f5f9 100%
+    #dbeafe 0%,
+    #f8faff 45%,
+    #fffbea 100%
   );
   display: flex;
   justify-content: center;
@@ -97,17 +97,17 @@ const HeaderBox = styled.div`
 const LogoBox = styled.div`
   width: 58px;
   height: 58px;
-  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   border-radius: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #d4af37;
+  color: #facc15;
   font-weight: 700;
   font-size: 28px;
   margin: 0 auto 16px;
-  border: 1px solid rgba(212, 175, 55, 0.5);
-  box-shadow: 0 10px 20px rgba(10, 25, 47, 0.2);
+  border: 1px solid rgba(250, 204, 21, 0.55);
+  box-shadow: 0 10px 20px rgba(29, 78, 216, 0.24);
 `;
 
 const BrandTitle = styled.h1`
@@ -117,7 +117,7 @@ const BrandTitle = styled.h1`
   margin: 0 0 6px 0;
 
   span {
-    color: #c5a059;
+    color: #eab308;
   }
 `;
 
@@ -133,12 +133,12 @@ const ForgotPasswordLink = styled.div`
   margin-bottom: 18px;
 
   a {
-    color: #c5a059;
+    color: #eab308;
     font-size: 0.85rem;
     font-weight: 500;
 
     &:hover {
-      color: #0a192f;
+      color: #1d4ed8;
       text-decoration: underline;
     }
   }
@@ -147,9 +147,9 @@ const ForgotPasswordLink = styled.div`
 const SubmitButton = styled(Button)`
   height: 48px !important;
   border-radius: 14px !important;
-  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%) !important;
-  border: 1px solid rgba(212, 175, 55, 0.4) !important;
-  box-shadow: 0 8px 20px rgba(10, 25, 47, 0.2) !important;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
+  border: 1px solid rgba(250, 204, 21, 0.55) !important;
+  box-shadow: 0 8px 20px rgba(29, 78, 216, 0.28) !important;
   color: #ffffff !important;
   font-size: 16px !important;
   font-weight: 600 !important;
@@ -158,7 +158,7 @@ const SubmitButton = styled(Button)`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(10, 25, 47, 0.3) !important;
+    box-shadow: 0 12px 24px rgba(29, 78, 216, 0.36) !important;
     color: #fef08a !important;
   }
 `;
@@ -170,11 +170,11 @@ const RegisterFooter = styled.div`
   color: #64748b;
 
   a {
-    color: #0a192f;
+    color: #1d4ed8;
     font-weight: 600;
 
     &:hover {
-      color: #c5a059;
+      color: #eab308;
     }
   }
 `;
@@ -252,7 +252,7 @@ export default function Login() {
               ]}
             >
               <Input
-                prefix={<UserOutlined style={{ color: "#0a192f" }} />}
+                prefix={<UserOutlined style={{ color: "#1d4ed8" }} />}
                 placeholder="66301234"
                 size="large"
               />
@@ -264,7 +264,7 @@ export default function Login() {
               rules={[{ required: true, message: "กรุณากรอกรหัสผ่าน" }]}
             >
               <Input.Password
-                prefix={<LockOutlined style={{ color: "#0a192f" }} />}
+                prefix={<LockOutlined style={{ color: "#1d4ed8" }} />}
                 placeholder="••••••••"
                 size="large"
               />
@@ -291,10 +291,10 @@ export default function Login() {
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
-                color: "#0a192f",
+                color: "#1d4ed8",
               }}
             >
-              <KeyOutlined style={{ color: "#c5a059" }} /> ลืมรหัสผ่าน
+              <KeyOutlined style={{ color: "#eab308" }} /> ลืมรหัสผ่าน
             </div>
           }
           open={forgotModalVisible}
@@ -328,8 +328,8 @@ export default function Login() {
               size="large"
               style={{
                 borderRadius: 12,
-                background: "#0a192f",
-                border: "1px solid #d4af37",
+                background: "#1d4ed8",
+                border: "1px solid #facc15",
                 height: 46,
               }}
             >

@@ -22,9 +22,9 @@ const PageContainer = styled.div`
   min-height: 100vh;
   background: radial-gradient(
     circle at 50% -10%,
-    #e0e7ff 0%,
-    #f8fafc 45%,
-    #f1f5f9 100%
+    #dbeafe 0%,
+    #f8faff 45%,
+    #fffbea 100%
   );
   color: #0f172a;
   font-family: "Prompt", -apple-system, sans-serif;
@@ -60,12 +60,12 @@ const LogoBox = styled.div`
 const LogoIcon = styled.div`
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #d4af37;
+  color: #facc15;
   font-weight: 700;
   font-size: 22px;
 
@@ -99,7 +99,7 @@ const MainTitle = styled.h1`
   }
 
   span.highlight {
-    background: linear-gradient(135deg, #0a192f 0%, #2563eb 50%, #c5a059 100%);
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #facc15 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -110,7 +110,7 @@ const StyledCarouselWrapper = styled.div`
   margin: 0 auto 50px;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(10, 25, 47, 0.12);
+  box-shadow: 0 20px 40px rgba(29, 78, 216, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.9);
 
   .slick-slide img {
@@ -132,7 +132,7 @@ const CarouselContent = styled.div`
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
-    rgba(10, 25, 47, 0.9) 100%
+    rgba(30, 64, 175, 0.92) 100%
   );
   padding: 30px 40px;
   color: #ffffff;
@@ -152,7 +152,7 @@ const FloatingGlassCard = styled.div`
 
   &:hover {
     transform: translateY(-8px);
-    box-shadow: 0 18px 36px rgba(10, 25, 47, 0.1);
+    box-shadow: 0 18px 36px rgba(29, 78, 216, 0.12);
   }
 `;
 
@@ -172,8 +172,8 @@ const SectionHeader = styled.div`
 `;
 
 const HeroActionButton = styled(Button)`
-  background: #0a192f !important;
-  border: 1px solid #d4af37 !important;
+  background: #1d4ed8 !important;
+  border: 1px solid #facc15 !important;
   color: white !important;
   height: 44px;
   border-radius: 12px;
@@ -182,15 +182,15 @@ const HeroActionButton = styled(Button)`
   justify-content: center;
   font-size: 1rem;
   padding: 0 24px;
-  box-shadow: 0 4px 14px rgba(10, 25, 47, 0.2);
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.28);
   transition: all 0.3s ease;
   white-space: nowrap; /* ป้องกันข้อความในปุ่มขึ้นบรรทัดใหม่ */
 
   &:hover {
-    background: #0f2a4a !important;
-    border-color: #f1c40f !important;
+    background: #1e40af !important;
+    border-color: #facc15 !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 6px 20px rgba(250, 204, 21, 0.32);
   }
 
   @media (max-width: 576px) {
@@ -244,7 +244,7 @@ export default function Home() {
           <LogoBox onClick={() => router.push("/")}>
             <LogoIcon>W</LogoIcon>
             <div style={{ fontWeight: 700, fontSize: "1.2rem" }}>
-              WIL <span style={{ color: "#c5a059" }}>Progression</span>
+              WIL <span style={{ color: "#eab308" }}>Progression</span>
             </div>
           </LogoBox>
 
@@ -298,7 +298,7 @@ export default function Home() {
                   <CarouselContent>
                     <h3
                       style={{
-                        color: "#d4af37",
+                        color: "#facc15",
                         fontSize: "1.4rem",
                         margin: 0,
                       }}
@@ -328,7 +328,7 @@ export default function Home() {
             >
               <SectionHeader>
                 <h2>
-                  <FireOutlined style={{ color: "#c5a059" }} />{" "}
+                  <FireOutlined style={{ color: "#eab308" }} />{" "}
                   ผลงานการปฏิบัติงานรายวัน (Featured WIL Journals)
                 </h2>
                 <p>บันทึกการทำงานจริงในสนามจากนักเรียนโครงการ WIL</p>
@@ -352,7 +352,7 @@ export default function Home() {
                             marginBottom: 10,
                           }}
                         >
-                          <span style={{ fontWeight: 700, color: "#0a192f" }}>
+                          <span style={{ fontWeight: 700, color: "#1d4ed8" }}>
                             {item.first_name} {item.last_name}
                           </span>
                           <Tag color="gold">Rank Lv.{item.rank_level}</Tag>

@@ -309,9 +309,9 @@ export default function AdminDashboard() {
         ) : (
           <Container>
             {/* Section 1: พิจารณาเสนอเลื่อนขั้นนักเรียน */}
-            <GlassCard style={{ border: "1px solid rgba(212, 175, 55, 0.5)" }}>
+            <GlassCard style={{ border: "1px solid rgba(250, 204, 21, 0.55)" }}>
               <SectionTitle>
-                <TrophyOutlined style={{ color: "#c5a059" }} />{" "}
+                <TrophyOutlined style={{ color: "#eab308" }} />{" "}
                 พิจารณาคำขอเสนอเลื่อนขั้นนักเรียนจากอาจารย์ (
                 {promotions.filter((p) => p.status === "pending").length}{" "}
                 รายการค้างอยู่)
@@ -335,15 +335,15 @@ export default function AdminDashboard() {
                 }}
               >
                 <SectionTitle style={{ margin: 0 }}>
-                  <PictureOutlined style={{ color: "#c5a059" }} /> จัดการ
+                  <PictureOutlined style={{ color: "#eab308" }} /> จัดการ
                   Carousel สไลด์ภาพผลงาน & รางวัลการแข่งขัน
                 </SectionTitle>
                 <Button
                   type="primary"
                   icon={<PlusOutlined />}
                   style={{
-                    background: "#0a192f",
-                    border: "1px solid #d4af37",
+                    background: "#1d4ed8",
+                    border: "1px solid #facc15",
                     borderRadius: 12,
                   }}
                   onClick={() => setAddModalVisible(true)}
@@ -390,7 +390,7 @@ export default function AdminDashboard() {
             {/* Section 3: Featured Journals Selection */}
             <GlassCard>
               <SectionTitle>
-                <StarOutlined style={{ color: "#c5a059" }} />{" "}
+                <StarOutlined style={{ color: "#eab308" }} />{" "}
                 เลือกผลงานปฏิบัติงานประจำวันของนักเรียนไปโชว์หน้าแรก
               </SectionTitle>
               <Table
@@ -438,7 +438,7 @@ export default function AdminDashboard() {
                   htmlType="submit"
                   block
                   style={{
-                    background: "#0a192f",
+                    background: "#1d4ed8",
                     borderRadius: 12,
                     height: 46,
                   }}

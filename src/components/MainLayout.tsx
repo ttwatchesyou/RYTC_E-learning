@@ -21,9 +21,9 @@ const StyledLayout = styled(Layout)`
   min-height: 100vh;
   background: radial-gradient(
     circle at 50% -10%,
-    #e0e7ff 0%,
-    #f8fafc 45%,
-    #f1f5f9 100%
+    #dbeafe 0%,
+    #f8faff 45%,
+    #fffbea 100%
   );
   font-family: "Prompt", -apple-system, BlinkMacSystemFont, sans-serif;
   position: relative;
@@ -97,15 +97,15 @@ const LogoBox = styled.div`
 const LogoIcon = styled.div`
   width: 34px;
   height: 34px;
-  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #d4af37;
+  color: #facc15;
   font-weight: 700;
   font-size: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  border: 1px solid rgba(250, 204, 21, 0.55);
 `;
 
 const BrandText = styled.div`
@@ -114,7 +114,7 @@ const BrandText = styled.div`
   font-size: clamp(0.95rem, 3.5vw, 1.1rem);
 
   span {
-    color: #c5a059;
+    color: #eab308;
   }
 `;
 
@@ -128,12 +128,12 @@ const UserProfileBox = styled.div`
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  border: 1px solid rgba(250, 204, 21, 0.55);
   transition: all 0.2s ease;
 
   &:hover {
     background: #ffffff;
-    border-color: #d4af37;
+    border-color: #facc15;
   }
 `;
 
@@ -205,11 +205,11 @@ export default function MainLayout({
 
         <Space size={8} style={{ display: "flex", alignItems: "center" }}>
           <Tag
-            icon={<TrophyOutlined style={{ color: "#c5a059" }} />}
+            icon={<TrophyOutlined style={{ color: "#facc15" }} />}
             style={{
-              background: "#0a192f",
+              background: "#1d4ed8",
               color: "#ffffff",
-              border: "1px solid #d4af37",
+              border: "1px solid #facc15",
               borderRadius: 14,
               padding: "0 8px",
               height: 28,
@@ -228,9 +228,9 @@ export default function MainLayout({
               <Avatar
                 size={24}
                 style={{
-                  backgroundColor: "#0a192f",
-                  border: "1px solid #d4af37",
-                  color: "#d4af37",
+                  backgroundColor: "#1d4ed8",
+                  border: "1px solid #facc15",
+                  color: "#facc15",
                   fontSize: 11,
                 }}
                 icon={<UserOutlined />}

@@ -15,9 +15,9 @@ const PageContainer = styled.div`
   min-height: 100vh;
   background: radial-gradient(
     circle at 50% -10%,
-    #020617 0%,
-    #0f172a 50%,
-    #030712 100%
+    #1e3a8a 0%,
+    #102b66 50%,
+    #071a42 100%
   );
   display: flex;
   justify-content: center;
@@ -35,7 +35,7 @@ const AdminCard = styled.div`
   backdrop-filter: blur(30px) saturate(200%);
   -webkit-backdrop-filter: blur(30px) saturate(200%);
   border-radius: 28px;
-  border: 1px solid rgba(212, 175, 55, 0.5);
+  border: 1px solid rgba(250, 204, 21, 0.55);
   padding: 40px;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
     inset 0 1px 1px rgba(255, 255, 255, 0.2);
@@ -51,15 +51,15 @@ const HeaderBox = styled.div`
 const ShieldIconBox = styled.div`
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #d4af37;
+  color: #facc15;
   font-size: 32px;
   margin: 0 auto 16px;
-  border: 1px solid rgba(212, 175, 55, 0.6);
+  border: 1px solid rgba(250, 204, 21, 0.65);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 `;
 
@@ -70,7 +70,7 @@ const Title = styled.h1`
   margin: 0 0 6px 0;
 
   span {
-    color: #d4af37;
+    color: #facc15;
   }
 `;
 
@@ -97,7 +97,7 @@ const StyledInputWrapper = styled.div`
 
     &:hover,
     &:focus-within {
-      border-color: #d4af37 !important;
+      border-color: #facc15 !important;
     }
   }
 
@@ -110,19 +110,19 @@ const StyledInputWrapper = styled.div`
 const SubmitButton = styled(Button)`
   height: 50px !important;
   border-radius: 14px !important;
-  background: linear-gradient(135deg, #d4af37 0%, #c5a059 100%) !important;
+  background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
   border: none !important;
-  color: #0a192f !important;
+  color: #172554 !important;
   font-size: 16px !important;
   font-weight: 700 !important;
   width: 100%;
   margin-top: 12px;
-  box-shadow: 0 10px 24px rgba(212, 175, 55, 0.3) !important;
+  box-shadow: 0 10px 24px rgba(250, 204, 21, 0.34) !important;
   transition: all 0.3s ease !important;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(212, 175, 55, 0.45) !important;
+    box-shadow: 0 14px 28px rgba(250, 204, 21, 0.48) !important;
   }
 `;
 
@@ -178,7 +178,7 @@ export default function AdminLogin() {
                 ]}
               >
                 <Input
-                  prefix={<UserOutlined style={{ color: "#d4af37" }} />}
+                  prefix={<UserOutlined style={{ color: "#facc15" }} />}
                   placeholder="admin"
                   size="large"
                 />
@@ -192,7 +192,7 @@ export default function AdminLogin() {
                 ]}
               >
                 <Input.Password
-                  prefix={<LockOutlined style={{ color: "#d4af37" }} />}
+                  prefix={<LockOutlined style={{ color: "#facc15" }} />}
                   placeholder="••••••••"
                   size="large"
                 />

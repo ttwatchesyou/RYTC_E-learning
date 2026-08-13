@@ -67,12 +67,12 @@ const DashboardContainer = styled.div`
 `;
 
 const WelcomeBanner = styled.div`
-  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  border: 1px solid rgba(250, 204, 21, 0.5);
   border-radius: 20px;
   padding: 24px;
   color: #ffffff;
-  box-shadow: 0 12px 28px rgba(10, 25, 47, 0.1);
+  box-shadow: 0 12px 28px rgba(29, 78, 216, 0.22);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,7 +92,7 @@ const GreetingTitle = styled.h2`
   margin: 0;
 
   span {
-    color: #d4af37;
+    color: #facc15;
   }
 `;
 
@@ -126,8 +126,8 @@ const StatIconBox = styled.div<{ $color?: string; $bg?: string }>`
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: ${(props) => props.$bg || "rgba(10, 25, 47, 0.08)"};
-  color: ${(props) => props.$color || "#0a192f"};
+  background: ${(props) => props.$bg || "rgba(29, 78, 216, 0.1)"};
+  color: ${(props) => props.$color || "#1d4ed8"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -233,7 +233,7 @@ const StyledTable = styled(Table)`
     background: transparent !important;
   }
   .ant-table-thead > tr > th {
-    background: rgba(10, 25, 47, 0.04) !important;
+    background: rgba(29, 78, 216, 0.05) !important;
     color: #0f172a !important;
     font-weight: 700 !important;
     padding: 12px 14px !important;
@@ -247,7 +247,7 @@ const StudentGlassCard = styled.div<{ $isPending?: boolean }>`
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 18px;
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  border: 1px solid rgba(250, 204, 21, 0.45);
   padding: 20px;
   position: relative;
   transition: all 0.3s ease;
@@ -256,8 +256,8 @@ const StudentGlassCard = styled.div<{ $isPending?: boolean }>`
 
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 14px 28px rgba(10, 25, 47, 0.12);
-    border-color: #d4af37;
+    box-shadow: 0 14px 28px rgba(29, 78, 216, 0.18);
+    border-color: #facc15;
   }
 `;
 
@@ -282,15 +282,15 @@ const StudentAvatarBox = styled.div`
   width: 54px;
   height: 54px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #0a192f 0%, #1e3a8a 100%);
-  color: #d4af37;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: #facc15;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
   margin-bottom: 12px;
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  box-shadow: 0 4px 12px rgba(10, 25, 47, 0.15);
+  border: 1px solid rgba(250, 204, 21, 0.5);
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.22);
 `;
 
 const ProfileHeaderBox = styled.div`
@@ -735,7 +735,7 @@ export default function TeacherDashboard() {
               type="primary"
               size="small"
               icon={<CheckOutlined />}
-              style={{ background: "#0a192f", border: "1px solid #d4af37", borderRadius: 8 }}
+              style={{ background: "#1d4ed8", border: "1px solid #facc15", borderRadius: 8 }}
               onClick={() => handleApprove(record.id, "step1_assign", "approved")}
             >
               Step 1
@@ -856,8 +856,8 @@ export default function TeacherDashboard() {
                   size="large"
                   icon={<PlusOutlined />}
                   style={{
-                    background: "#d4af37",
-                    color: "#0a192f",
+                    background: "#facc15",
+                    color: "#172554",
                     border: "none",
                     fontWeight: 700,
                     borderRadius: 12,
@@ -873,7 +873,7 @@ export default function TeacherDashboard() {
             <Row gutter={[12, 12]}>
               <Col xs={12} sm={12} md={6}>
                 <StatCard>
-                  <StatIconBox $bg="rgba(212, 175, 55, 0.15)" $color="#c5a059">
+                  <StatIconBox $bg="rgba(250, 204, 21, 0.18)" $color="#eab308">
                     <ClockCircleOutlined />
                   </StatIconBox>
                   <StatInfo>
@@ -1056,11 +1056,11 @@ export default function TeacherDashboard() {
                                     size="small"
                                     style={{
                                       borderRadius: 16,
-                                      border: "1px solid rgba(212, 175, 55, 0.35)",
+                                      border: "1px solid rgba(250, 204, 21, 0.45)",
                                       background: "rgba(255,255,255,0.95)",
                                     }}
                                   >
-                                    <div style={{ fontWeight: 700, color: "#0a192f" }}>
+                                    <div style={{ fontWeight: 700, color: "#1d4ed8" }}>
                                       {item.first_name} {item.last_name} ({item.student_code})
                                     </div>
                                     <div style={{ fontSize: 11, color: "#64748b", margin: "2px 0 6px 0" }}>
@@ -1163,8 +1163,8 @@ export default function TeacherDashboard() {
                             icon={<SaveOutlined />}
                             loading={savingAttendance}
                             style={{
-                              background: "#0a192f",
-                              border: "1px solid #d4af37",
+                              background: "#1d4ed8",
+                              border: "1px solid #facc15",
                               borderRadius: 10,
                               height: 38,
                               fontWeight: 600,
@@ -1352,7 +1352,7 @@ export default function TeacherDashboard() {
                             type="primary"
                             icon={<SendOutlined />}
                             block
-                            style={{ background: "#0a192f", border: "1px solid #d4af37", borderRadius: 8, height: 38, fontWeight: 600 }}
+                            style={{ background: "#1d4ed8", border: "1px solid #facc15", borderRadius: 8, height: 38, fontWeight: 600 }}
                             onClick={() => handleGiveBonusPoints()}
                           >
                             มอบคะแนน
@@ -1412,7 +1412,7 @@ export default function TeacherDashboard() {
                                           <Button
                                             size="small"
                                             type="primary"
-                                            style={{ background: "#0a192f", border: "1px solid #d4af37", borderRadius: 6 }}
+                                            style={{ background: "#1d4ed8", border: "1px solid #facc15", borderRadius: 6 }}
                                             onClick={() => handleApprove(task.id, "step1_assign", "approved")}
                                           >
                                             Step 1
@@ -1500,7 +1500,7 @@ export default function TeacherDashboard() {
                                   <Form.Item label="เหตุผล / ผลงานโดดเด่น" name="reason">
                                     <Input.TextArea rows={2} placeholder="อธิบายผลงาน..." style={{ borderRadius: 8 }} />
                                   </Form.Item>
-                                  <Button type="primary" htmlType="submit" icon={<SendOutlined />} block style={{ background: "#0a192f", border: "1px solid #d4af37", borderRadius: 10, height: 38 }}>
+                                  <Button type="primary" htmlType="submit" icon={<SendOutlined />} block style={{ background: "#1d4ed8", border: "1px solid #facc15", borderRadius: 10, height: 38 }}>
                                     ส่งเสนอแอดมิน
                                   </Button>
                                 </Form>
@@ -1544,7 +1544,7 @@ export default function TeacherDashboard() {
                 <Form.Item label="คะแนน EXP" name="points" initialValue={10} rules={[{ required: true }]}>
                   <InputNumber min={5} max={100} style={{ width: "100%" }} size="middle" />
                 </Form.Item>
-                <Button type="primary" htmlType="submit" block style={{ background: "#0a192f", border: "1px solid #d4af37", borderRadius: 10, height: 42 }}>
+                <Button type="primary" htmlType="submit" block style={{ background: "#1d4ed8", border: "1px solid #facc15", borderRadius: 10, height: 42 }}>
                   ยืนยันสั่งงาน
                 </Button>
               </Form>
@@ -1566,7 +1566,7 @@ export default function TeacherDashboard() {
                 <Form.Item name="description" label="รายละเอียดทักษะ">
                   <Input.TextArea rows={3} placeholder="คำอธิบายขอบเขตทักษะ..." />
                 </Form.Item>
-                <Button type="primary" htmlType="submit" block style={{ background: "#0a192f", border: "1px solid #d4af37", borderRadius: 10, height: 42 }}>
+                <Button type="primary" htmlType="submit" block style={{ background: "#1d4ed8", border: "1px solid #facc15", borderRadius: 10, height: 42 }}>
                   สร้างทักษะ
                 </Button>
               </Form>
