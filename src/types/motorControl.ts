@@ -46,6 +46,7 @@ export interface ComponentDefinition {
   terminals: TerminalDefinition[];
   properties: Record<string, string | number | boolean>;
   defaultState: string;
+  interactiveStates: string[];
   accent: string;
   icon: IconType;
 }

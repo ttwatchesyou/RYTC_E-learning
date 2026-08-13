@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { DragEvent, MouseEvent } from "react";
-import { HiOutlineCursorArrowRays, HiOutlineBolt } from "react-icons/hi2";
+import { HiOutlineCursorArrowRays, HiOutlineBolt, HiOutlinePlay } from "react-icons/hi2";
 import type {
   ComponentDefinition,
   PlacedComponent,
@@ -17,6 +17,7 @@ interface CircuitWorkspaceProps {
   placed: PlacedComponent[];
   wires: WireConnection[];
   selectedId: string | null;
+  selectedWireId: string | null;
   mode: "select" | "wire";
   wireColor: string;
   zoom: number;
@@ -24,17 +25,21 @@ interface CircuitWorkspaceProps {
   draftWirePoints: WirePoint[];
   onDropComponent: (componentId: string, x: number, y: number, instanceId?: string) => void;
   onSelect: (instanceId: string | null) => void;
-  onTerminalWireStart: (instanceId: string, terminal: TerminalDefinition) => void;
-  onTerminalWireEnd: (instanceId: string, terminal: TerminalDefinition) => void;
+  onSelectWire: (wireId: string | null) => void;
+  onBeginWireEdit: () => void;
+  onUpdateWirePoints: (wireId: string, points: WirePoint[]) => void;
+  onToggleComponent: (instanceId: string) => void;
   onTerminalClick: (instanceId: string, terminal: TerminalDefinition) => void;
   onAddWirePoint: (point: WirePoint) => void;
   onCancelWire: () => void;
+  isSimulating: boolean;
+  onStartSimulation: () => void;
+  energizedTerminals: Set<string>;
+  energizedWires: Set<string>;
 }
 
 const canvasWidth = 1200;
 const canvasHeight = 680;
-const freehandSampleDistance = 10;
-
 const clamp = (value: number, minimum: number, maximum: number) =>
   Math.min(maximum, Math.max(minimum, value));
 
@@ -65,58 +70,14 @@ const simplifyRoute = (points: WirePoint[], tolerance = 3.5): WirePoint[] => {
   return [...left.slice(0, -1), ...right];
 };
 
-const smoothPath = (route: WirePoint[]) => {
+const straightPath = (route: WirePoint[]) => {
   const points = simplifyRoute(route);
-  if (points.length < 3) return roundedPath(points);
-
-  let path = `M ${points[0].x} ${points[0].y}`;
-  for (let index = 0; index < points.length - 1; index += 1) {
-    const previous = points[Math.max(0, index - 1)];
-    const current = points[index];
-    const next = points[index + 1];
-    const afterNext = points[Math.min(points.length - 1, index + 2)];
-    const controlOne = {
-      x: current.x + (next.x - previous.x) / 6,
-      y: current.y + (next.y - previous.y) / 6,
-    };
-    const controlTwo = {
-      x: next.x - (afterNext.x - current.x) / 6,
-      y: next.y - (afterNext.y - current.y) / 6,
-    };
-    path += ` C ${controlOne.x} ${controlOne.y}, ${controlTwo.x} ${controlTwo.y}, ${next.x} ${next.y}`;
-  }
-  return path;
-};
-
-const roundedPath = (route: WirePoint[]) => {
-  const points = route.filter((point, index) => {
-    if (index === 0) return true;
-    const previous = route[index - 1];
-    return Math.abs(point.x - previous.x) > 0.5 || Math.abs(point.y - previous.y) > 0.5;
-  });
   if (!points.length) return "";
   if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
-
-  let path = `M ${points[0].x} ${points[0].y}`;
-  for (let index = 1; index < points.length - 1; index += 1) {
-    const previous = points[index - 1];
-    const current = points[index];
-    const next = points[index + 1];
-    const incoming = Math.hypot(current.x - previous.x, current.y - previous.y);
-    const outgoing = Math.hypot(next.x - current.x, next.y - current.y);
-    const radius = Math.min(10, incoming / 3, outgoing / 3);
-    const before = {
-      x: current.x + ((previous.x - current.x) / incoming) * radius,
-      y: current.y + ((previous.y - current.y) / incoming) * radius,
-    };
-    const after = {
-      x: current.x + ((next.x - current.x) / outgoing) * radius,
-      y: current.y + ((next.y - current.y) / outgoing) * radius,
-    };
-    path += ` L ${before.x} ${before.y} Q ${current.x} ${current.y} ${after.x} ${after.y}`;
-  }
-  const last = points[points.length - 1];
-  return `${path} L ${last.x} ${last.y}`;
+  return points.slice(1).reduce(
+    (path, point) => `${path} L ${point.x} ${point.y}`,
+    `M ${points[0].x} ${points[0].y}`,
+  );
 };
 
 function terminalPoint(
@@ -135,6 +96,7 @@ export default function CircuitWorkspace({
   placed,
   wires,
   selectedId,
+  selectedWireId,
   mode,
   wireColor,
   zoom,
@@ -142,18 +104,23 @@ export default function CircuitWorkspace({
   draftWirePoints,
   onDropComponent,
   onSelect,
-  onTerminalWireStart,
-  onTerminalWireEnd,
+  onSelectWire,
+  onBeginWireEdit,
+  onUpdateWirePoints,
+  onToggleComponent,
   onTerminalClick,
   onAddWirePoint,
   onCancelWire,
+  isSimulating,
+  onStartSimulation,
+  energizedTerminals,
+  energizedWires,
 }: CircuitWorkspaceProps) {
   const [wireCursor, setWireCursor] = useState<WirePoint | null>(null);
-  const lastFreehandPoint = useRef<WirePoint | null>(null);
+  const [draggingWirePoint, setDraggingWirePoint] = useState<{ wireId: string; pointIndex: number } | null>(null);
   const definitions = new Map(components.map((item) => [item.id, item]));
 
   useEffect(() => {
-    lastFreehandPoint.current = null;
     if (!pendingTerminal) setWireCursor(null);
   }, [pendingTerminal]);
 
@@ -221,11 +188,49 @@ export default function CircuitWorkspace({
   };
 
   const handleCanvasClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (mode === "wire" && pendingTerminal) {
+    if (pendingTerminal) {
       onAddWirePoint(canvasPoint(event));
       return;
     }
     onSelect(null);
+    onSelectWire(null);
+  };
+
+  const pointFromClient = (clientX: number, clientY: number, element: Element): WirePoint => {
+    const bounds = element.getBoundingClientRect();
+    return {
+      x: clamp((clientX - bounds.left) / zoom, 0, canvasWidth),
+      y: clamp((clientY - bounds.top) / zoom, 0, canvasHeight),
+    };
+  };
+
+  const materializedPoints = (wire: WireConnection, from: WirePoint, to: WirePoint) => wire.points?.length
+    ? wire.points
+    : [{ x: from.x, y: from.y + (to.y - from.y) / 2 }, { x: to.x, y: from.y + (to.y - from.y) / 2 }];
+
+  const selectWire = (event: MouseEvent<SVGPathElement>, wire: WireConnection) => {
+    event.stopPropagation();
+    onSelectWire(wire.id);
+    onSelect(null);
+  };
+
+  const addWirePoint = (event: MouseEvent<SVGPathElement>, wire: WireConnection, from: WirePoint, to: WirePoint) => {
+    event.stopPropagation();
+    const point = pointFromClient(event.clientX, event.clientY, event.currentTarget.ownerSVGElement as SVGSVGElement);
+    const points = materializedPoints(wire, from, to);
+    const route = [from, ...points, to];
+    let closestSegment = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+    for (let index = 0; index < route.length - 1; index += 1) {
+      const distance = pointDistanceToLine(point, route[index], route[index + 1]);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestSegment = index;
+      }
+    }
+    onBeginWireEdit();
+    onUpdateWirePoints(wire.id, [...points.slice(0, closestSegment), point, ...points.slice(closestSegment)]);
+    onSelectWire(wire.id);
   };
 
   const pendingInstance = pendingTerminal
@@ -243,39 +248,48 @@ export default function CircuitWorkspace({
           <span>CIRCUIT WORKSPACE</span>
           <strong>CONTROL SCHEMATIC · SHEET 01</strong>
         </div>
-        <div><i /> GRID 20 PX <i /> ZOOM {Math.round(zoom * 100)}%</div>
+        <div className={styles.workspaceHeaderActions}>
+          <span><i /> GRID 20 PX <i /> ZOOM {Math.round(zoom * 100)}%</span>
+          <button
+            type="button"
+            className={styles.workspaceStartButton}
+            onClick={onStartSimulation}
+            disabled={isSimulating}
+          >
+            <HiOutlinePlay /> {isSimulating ? "กำลังจำลอง" : "เริ่มซิม"}
+          </button>
+        </div>
       </div>
       <div className={styles.workspaceViewport}>
-        <div
-          className={`${styles.circuitCanvas} ${mode === "wire" ? styles.circuitCanvasWire : ""}`}
-          style={{ transform: `scale(${zoom})` }}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onMouseMove={(event) => {
-            if (!pendingTerminal) return;
-            const point = canvasPoint(event);
-            setWireCursor(point);
-
-            if (mode === "select" && pendingStart) {
-              const previous = lastFreehandPoint.current || pendingStart;
-              if (Math.hypot(point.x - previous.x, point.y - previous.y) >= freehandSampleDistance) {
-                lastFreehandPoint.current = point;
-                onAddWirePoint(point);
+        <div className={styles.circuitCanvasStage} style={{ width: canvasWidth * zoom, height: canvasHeight * zoom }}>
+          <div
+            className={`${styles.circuitCanvas} ${mode === "wire" || pendingTerminal ? styles.circuitCanvasWire : ""}`}
+            style={{ transform: `scale(${zoom})` }}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            onMouseMove={(event) => {
+              if (draggingWirePoint) {
+                const wire = wires.find((item) => item.id === draggingWirePoint.wireId);
+                if (wire?.points) {
+                  const point = canvasPoint(event);
+                  onUpdateWirePoints(wire.id, wire.points.map((item, index) => index === draggingWirePoint.pointIndex ? point : item));
+                }
+                return;
               }
-            }
-          }}
-          onMouseLeave={() => setWireCursor(null)}
-          onClick={handleCanvasClick}
-          onMouseUp={() => {
-            if (mode === "select" && pendingTerminal) onCancelWire();
-          }}
-          onContextMenu={(event) => {
-            if (!pendingTerminal) return;
-            event.preventDefault();
-            onCancelWire();
-          }}
-        >
-          <svg className={styles.wireLayer} viewBox="0 0 1200 680" preserveAspectRatio="none" aria-label="Circuit wires">
+              if (!pendingTerminal) return;
+              const point = canvasPoint(event);
+              setWireCursor(point);
+            }}
+            onMouseLeave={() => { setWireCursor(null); setDraggingWirePoint(null); }}
+            onMouseUp={() => setDraggingWirePoint(null)}
+            onClick={handleCanvasClick}
+            onContextMenu={(event) => {
+              if (!pendingTerminal) return;
+              event.preventDefault();
+              onCancelWire();
+            }}
+          >
+            <svg className={styles.wireLayer} viewBox="0 0 1200 680" preserveAspectRatio="none" aria-label="Circuit wires">
             <defs>
               <filter id="wireShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="0" dy="1" stdDeviation="1" floodOpacity="0.25" />
@@ -293,27 +307,51 @@ export default function CircuitWorkspace({
               const route = wire.points?.length
                 ? [from, ...wire.points, to]
                 : [from, { x: from.x, y: from.y + (to.y - from.y) / 2 }, { x: to.x, y: from.y + (to.y - from.y) / 2 }, to];
-              const path = wire.points && wire.points.length > 2 ? smoothPath(route) : roundedPath(route);
+              const path = straightPath(route);
+              const selected = selectedWireId === wire.id;
               return (
                 <g key={wire.id}>
                   <path className={styles.wireHalo} d={path} />
-                  <path className={styles.wirePath} d={path} stroke={wire.color} filter="url(#wireShadow)" />
+                  <path className={`${styles.wirePath} ${energizedWires.has(wire.id) ? styles.wirePathEnergized : ""}`} d={path} stroke={wire.color} filter="url(#wireShadow)" />
+                  <path
+                    className={`${styles.wireHitArea} ${selected ? styles.wireHitAreaSelected : ""}`}
+                    d={path}
+                    onClick={(event) => selectWire(event, wire)}
+                    onDoubleClick={(event) => addWirePoint(event, wire, from, to)}
+                  />
                   <circle className={styles.wireEndpoint} cx={from.x} cy={from.y} r="4" fill={wire.color} />
                   <circle className={styles.wireEndpoint} cx={to.x} cy={to.y} r="4" fill={wire.color} />
+                  {selected && materializedPoints(wire, from, to).map((point, index) => (
+                    <g key={`${wire.id}-handle-${index}`}>
+                      <circle className={styles.wireControlHandleHalo} cx={point.x} cy={point.y} r="10" />
+                      <circle
+                        className={styles.wireControlHandle}
+                        cx={point.x}
+                        cy={point.y}
+                        r="6"
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          onBeginWireEdit();
+                          if (!wire.points?.length) onUpdateWirePoints(wire.id, materializedPoints(wire, from, to));
+                          setDraggingWirePoint({ wireId: wire.id, pointIndex: index });
+                        }}
+                        onClick={(event) => event.stopPropagation()}
+                      />
+                    </g>
+                  ))}
                 </g>
               );
             })}
 
             {pendingStart && wireCursor && (() => {
               const previewRoute = [pendingStart, ...draftWirePoints, wireCursor];
-              const previewPath = mode === "select" && draftWirePoints.length > 1
-                ? smoothPath(previewRoute)
-                : roundedPath(previewRoute);
+              const previewPath = straightPath(previewRoute);
               return (
                 <g>
                   <path className={styles.wirePreviewHalo} d={previewPath} />
                   <path className={styles.wirePreview} d={previewPath} stroke={wireColor} />
-                  {mode === "wire" && draftWirePoints.map((point, index) => (
+                  {draftWirePoints.map((point, index) => (
                     <circle className={styles.wireBendPoint} cx={point.x} cy={point.y} r="5" fill={wireColor} key={`${point.x}-${point.y}-${index}`} />
                   ))}
                 </g>
@@ -323,9 +361,7 @@ export default function CircuitWorkspace({
 
           {pendingTerminal && (
             <div className={styles.wireHint}>
-              {mode === "wire"
-                ? "คลิกพื้นที่เพื่อเพิ่มจุดหัก · คลิก Terminal เพื่อจบสาย · คลิกขวาหรือ Esc เพื่อยกเลิก"
-                : "กดค้างแล้ววาดแนวสายได้อย่างอิสระ · ปล่อยที่ Terminal ปลายทางเพื่อเชื่อมสาย"}
+              คลิกพื้นที่เพื่อเพิ่มจุดหัก · คลิก Terminal ปลายทางเพื่อจบสาย · คลิกขวาหรือ Esc เพื่อยกเลิก
             </div>
           )}
 
@@ -350,9 +386,9 @@ export default function CircuitWorkspace({
                 wireMode={mode === "wire"}
                 pendingTerminal={pendingTerminal}
                 wires={wires}
+                energizedTerminals={energizedTerminals}
                 onSelect={() => onSelect(instance.instanceId)}
-                onTerminalWireStart={(terminal) => onTerminalWireStart(instance.instanceId, terminal)}
-                onTerminalWireEnd={(terminal) => onTerminalWireEnd(instance.instanceId, terminal)}
+                onActivate={() => onToggleComponent(instance.instanceId)}
                 onTerminalClick={(terminal) => onTerminalClick(instance.instanceId, terminal)}
                 onDragStart={(event) => {
                   event.dataTransfer.setData("application/motor-instance", instance.instanceId);
@@ -369,6 +405,7 @@ export default function CircuitWorkspace({
               />
             );
           })}
+          </div>
         </div>
       </div>
     </section>

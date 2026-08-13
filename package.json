@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3025",
-    "build": "cross-env PORT=3035 next build",
-    "start": "cross-env PORT=3035 next start",
+    "build": "cross-env NEXT_DIST_DIR=.next-build PORT=3035 next build",
+    "start": "cross-env NEXT_DIST_DIR=.next-build PORT=3035 next start",
     "deploy:dev": "yarn build && pm2 startOrRestart ecosystem.config.js --env dev",
     "lint": "next lint",
     "eslint": "eslint . --ext .js,.jsx,.tsx,.ts",

@@ -12,9 +12,9 @@ interface ElectricalComponentProps {
   wireMode: boolean;
   pendingTerminal: { instanceId: string; terminalId: string } | null;
   wires: WireConnection[];
+  energizedTerminals: Set<string>;
   onSelect: () => void;
-  onTerminalWireStart: (terminal: TerminalDefinition) => void;
-  onTerminalWireEnd: (terminal: TerminalDefinition) => void;
+  onActivate: () => void;
   onTerminalClick: (terminal: TerminalDefinition) => void;
   onDragStart: (event: DragEvent<HTMLDivElement>) => void;
 }
@@ -31,25 +31,13 @@ export default function ElectricalComponent({
   wireMode,
   pendingTerminal,
   wires,
+  energizedTerminals,
   onSelect,
-  onTerminalWireStart,
-  onTerminalWireEnd,
+  onActivate,
   onTerminalClick,
   onDragStart,
 }: ElectricalComponentProps) {
-  const isRunning = ["RUNNING", "ENERGIZED", "ON", "RUN 35 Hz"].includes(instance.state);
-
-  const handleTerminalWireStart = (event: MouseEvent<HTMLButtonElement>, terminal: TerminalDefinition) => {
-    event.stopPropagation();
-    event.preventDefault();
-    if (!wireMode) onTerminalWireStart(terminal);
-  };
-
-  const handleTerminalWireEnd = (event: MouseEvent<HTMLButtonElement>, terminal: TerminalDefinition) => {
-    event.stopPropagation();
-    event.preventDefault();
-    if (!wireMode) onTerminalWireEnd(terminal);
-  };
+  const isRunning = ["RUNNING", "ENERGIZED", "ON", "RUN 35 Hz", "CLOSED", "DETECTED", "PRESSED", "DONE"].includes(instance.state);
 
   return (
     <div
@@ -57,12 +45,23 @@ export default function ElectricalComponent({
       style={{ left: instance.x, top: instance.y, "--component-accent": definition.accent } as CSSProperties}
       draggable={!wireMode}
       onDragStart={onDragStart}
-      onClick={(event) => { event.stopPropagation(); onSelect(); }}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect();
+        if (!wireMode) onActivate();
+      }}
+      onKeyDown={(event) => {
+        if (wireMode || !["Enter", " "].includes(event.key)) return;
+        event.preventDefault();
+        onActivate();
+      }}
       role="button"
       tabIndex={0}
+      aria-label={`${definition.name} สถานะ ${instance.state} กดเพื่อเปลี่ยนสถานะ`}
+      title="คลิกเพื่อเปลี่ยนสถานะ · ลากเพื่อย้ายตำแหน่ง"
     >
       <span className={styles.componentRef}>{definition.shortName}</span>
-      <ComponentVisual type={definition.type} accent={definition.accent} />
+      <ComponentVisual type={definition.type} accent={definition.accent} state={instance.state} />
       <strong>{definition.name}</strong>
       <span className={styles.componentState}><i /> {instance.state}</span>
 
@@ -79,11 +78,10 @@ export default function ElectricalComponent({
             style={terminalStyle(definition, terminal)}
             active={active}
             connected={connected}
-            onWireStart={(event) => handleTerminalWireStart(event, terminal)}
-            onWireEnd={(event) => handleTerminalWireEnd(event, terminal)}
+            energized={energizedTerminals.has(`${instance.instanceId}::${terminal.id}`)}
             onClick={(event) => {
               event.stopPropagation();
-              if (wireMode) onTerminalClick(terminal);
+              onTerminalClick(terminal);
             }}
           />
         );

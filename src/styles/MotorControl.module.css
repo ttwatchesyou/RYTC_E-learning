@@ -206,12 +206,12 @@
 
 /* Home */
 .homePage {
-  padding-bottom: 88px;
+  padding-bottom: 64px;
 }
 
 .hero {
   position: relative;
-  min-height: 520px;
+  min-height: 430px;
   margin: 0 calc((100vw - min(1320px, calc(100vw - 48px))) / -2);
   padding: 64px max(24px, calc((100vw - 1240px) / 2));
   overflow: hidden;
@@ -252,7 +252,7 @@
 .heroContent {
   position: relative;
   z-index: 2;
-  max-width: 690px;
+  max-width: 760px;
 }
 
 .heroInner {
@@ -260,10 +260,8 @@
   z-index: 2;
   width: min(1240px, 100%);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(330px, 0.75fr);
+  display: flex;
   align-items: center;
-  gap: clamp(42px, 6vw, 80px);
 }
 
 .eyebrow {
@@ -309,7 +307,7 @@
 }
 
 .heroActions {
-  margin-bottom: 28px;
+  margin-bottom: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 11px;
@@ -453,7 +451,7 @@
 }
 
 .homeSection {
-  padding-top: 64px;
+  padding-top: 48px;
 }
 
 .sectionHeading {
@@ -498,8 +496,8 @@
 
 .modeCard {
   position: relative;
-  min-height: 420px;
-  padding: 34px;
+  min-height: 245px;
+  padding: 30px;
   overflow: hidden;
   border: 1px solid #dbe4f0;
   border-radius: 20px;
@@ -583,7 +581,7 @@
 .modeCard h3 {
   position: relative;
   z-index: 1;
-  margin: 24px 0 9px;
+  margin: 22px 0 24px;
   color: #172554;
   font-size: 24px;
   line-height: 1.35;
@@ -1576,7 +1574,7 @@
   height: calc(100vh - 66px);
   min-width: 960px;
   display: grid;
-  grid-template-rows: 64px 62px minmax(0, 1fr) 58px 24px;
+  grid-template-rows: 72px 68px minmax(0, 1fr) 58px 28px;
   overflow: hidden;
   background: #e8edf1;
 }
@@ -1599,13 +1597,13 @@
   display: block;
   margin-bottom: 3px;
   color: #1496d4;
-  font: 700 8px/1 var(--font-mono);
+  font: 700 10px/1 var(--font-mono);
   letter-spacing: 0.16em;
 }
 
 .practiceHeader h1 {
   margin: 0;
-  font-size: 20px;
+  font-size: 25px;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
@@ -1687,7 +1685,7 @@
 .toolGroup > span {
   margin: 0 8px 0 2px;
   color: #9aa4ae;
-  font: 700 7px/1 var(--font-mono);
+  font: 700 9px/1 var(--font-mono);
   letter-spacing: 0.12em;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -1695,8 +1693,8 @@
 
 .toolGroup button,
 .clearTool {
-  height: 46px;
-  min-width: 54px;
+  height: 52px;
+  min-width: 60px;
   padding: 0 10px;
   display: inline-flex;
   flex-direction: column;
@@ -1707,13 +1705,13 @@
   border: 1px solid transparent;
   background: transparent;
   border-radius: 6px;
-  font: 500 8px/1 "Prompt", sans-serif;
+  font: 600 10px/1 "Prompt", sans-serif;
   cursor: pointer;
 }
 
 .toolGroup button svg,
 .clearTool svg {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .toolGroup button:hover:not(:disabled),
@@ -1746,7 +1744,7 @@
 
 .wireColorGroup > span {
   color: #7e8b98;
-  font: 700 7px/1 var(--font-mono);
+  font: 700 9px/1 var(--font-mono);
   letter-spacing: 0.08em;
   white-space: nowrap;
 }
@@ -1810,7 +1808,7 @@
 .labGrid {
   min-height: 0;
   display: grid;
-  grid-template-columns: 310px minmax(520px, 1fr) 278px;
+  grid-template-columns: 310px minmax(520px, 1fr);
   overflow: hidden;
 }
 
@@ -1899,18 +1897,18 @@
 .panelTitle span {
   margin-bottom: 4px;
   color: #a0aab7;
-  font: 700 7px/1 var(--font-mono);
+  font: 700 8px/1 var(--font-mono);
   letter-spacing: 0.13em;
 }
 
 .panelTitle strong {
   color: #263442;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .panelTitle small {
   color: #8995a4;
-  font: 600 8px/1 var(--font-mono);
+  font: 600 9px/1 var(--font-mono);
 }
 
 .componentSearch {
@@ -2074,7 +2072,7 @@
   color: #7c8897;
   border-bottom: 1px solid #c7d0d8;
   background: #f7f8f9;
-  font: 600 7px/1 var(--font-mono);
+  font: 600 9px/1 var(--font-mono);
   letter-spacing: 0.07em;
 }
 
@@ -2085,7 +2083,7 @@
 
 .workspaceHeader > div:first-child span {
   color: #9aa5b1;
-  font-size: 6px;
+  font-size: 8px;
 }
 
 .workspaceHeader > div:first-child strong {
@@ -2099,6 +2097,35 @@
   gap: 6px;
 }
 
+.workspaceHeaderActions > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.workspaceStartButton {
+  height: 29px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  border: 1px solid #137536;
+  border-radius: 5px;
+  background: #20a35a;
+  font: 700 10px/1 var(--font-mono);
+  cursor: pointer;
+}
+
+.workspaceStartButton:hover:not(:disabled) {
+  background: #178b49;
+}
+
+.workspaceStartButton:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
 .workspaceHeader i {
   width: 5px;
   height: 5px;
@@ -2109,7 +2136,14 @@
 .workspaceViewport {
   min-height: 0;
   overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   background: #eef0f2;
+}
+
+.circuitCanvasStage {
+  min-width: 100%;
+  min-height: 100%;
 }
 
 .circuitCanvas {
@@ -2166,6 +2200,47 @@
 
 .wirePath {
   stroke-width: 3.5px;
+}
+
+.wirePathEnergized {
+  stroke-width: 5px;
+  stroke-dasharray: 10 5;
+  animation: wireFlow 650ms linear infinite;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+.wireHitArea {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 16px;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.wireHitAreaSelected {
+  stroke: rgba(14, 165, 233, 0.16);
+}
+
+.wireControlHandleHalo,
+.wireControlHandle {
+  pointer-events: all;
+}
+
+.wireControlHandleHalo {
+  fill: rgba(14, 165, 233, 0.16);
+  stroke: #fff;
+  stroke-width: 2px;
+}
+
+.wireControlHandle {
+  fill: #fff;
+  stroke: #0ea5e9;
+  stroke-width: 3px;
+  cursor: move;
+}
+
+.wireControlHandle:hover {
+  fill: #0ea5e9;
 }
 
 .wireEndpoint {
@@ -2451,6 +2526,11 @@
 .terminalConnected i {
   background: #2563eb;
   box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(37, 99, 235, 0.45);
+}
+
+.terminalEnergized i {
+  background: #22c55e;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(34, 197, 94, 0.55), 0 0 9px #22c55e;
 }
 
 .propertyTabs {
@@ -2889,7 +2969,7 @@
   color: #7f8c98;
   border-top: 1px solid #dfe4e8;
   background: #f6f7f8;
-  font: 600 7px/1 var(--font-mono);
+  font: 600 8px/1 var(--font-mono);
   letter-spacing: 0.05em;
 }
 
@@ -2902,6 +2982,16 @@
 
 .statusBar > span {
   gap: 7px;
+}
+
+.statusBar > .statusWarning {
+  color: #b45309;
+  font-weight: 700;
+}
+
+.statusBar > .statusWarning > i {
+  background: #f59e0b;
+  box-shadow: 0 0 5px rgba(245, 158, 11, 0.75);
 }
 
 .statusBar > span > i {
@@ -2932,6 +3022,322 @@
 }
 
 @media (max-width: 1120px) {
-  .labGrid { grid-template-columns: 220px minmax(480px, 1fr) 260px; }
+  .labGrid { grid-template-columns: 220px minmax(480px, 1fr); }
   .practiceHeader > div:first-child { min-width: 260px; }
+}
+
+/* Blue & gold lab theme */
+.practicePage {
+  --lab-navy: #0b2345;
+  --lab-blue: #164f86;
+  --lab-blue-bright: #2477b5;
+  --lab-blue-soft: #eaf3fb;
+  --lab-gold: #d2a62c;
+  --lab-gold-dark: #9a7110;
+  --lab-gold-soft: #fff7dc;
+  --lab-border: #bfd0e1;
+  --lab-text: #142b46;
+  --lab-muted: #5f7185;
+  color: var(--lab-text);
+  background: #dfe9f2;
+}
+
+.practiceHeader {
+  color: #fff;
+  border-bottom: 4px solid var(--lab-gold);
+  background: linear-gradient(105deg, #081c37 0%, #103d6c 72%, #174f83 100%);
+  box-shadow: 0 4px 14px rgba(4, 25, 50, 0.2);
+}
+
+.practiceHeader > div:first-child > span {
+  color: #f4cc5b;
+}
+
+.practiceHeader h1 {
+  color: #fff;
+}
+
+.labToolbar {
+  border-bottom-color: #9fb5ca;
+  background: #f8fbfe;
+  box-shadow: 0 4px 12px rgba(11, 35, 69, 0.12);
+}
+
+.toolGroup > span,
+.wireColorGroup > span {
+  color: #526b84;
+}
+
+.toolGroup button,
+.clearTool {
+  color: #284967;
+}
+
+.toolGroup button:hover:not(:disabled),
+.toolGroup .toolActive {
+  color: var(--lab-navy);
+  border-color: #d2a62c;
+  background: var(--lab-gold-soft);
+  box-shadow: inset 0 -3px 0 var(--lab-gold);
+}
+
+.toolGroup .toolActive svg {
+  color: var(--lab-blue-bright);
+}
+
+.toolbarDivider,
+.controlDivider {
+  background: #c9d6e2;
+}
+
+.wireColorPalette > button:hover,
+.wireColorPalette > .wireColorActive {
+  box-shadow: 0 0 0 2px var(--lab-gold-dark), 0 0 0 4px #fff;
+}
+
+.componentLibrary,
+.propertiesPanel {
+  border-color: #aebfd0;
+  background: #f7fafd;
+}
+
+.panelTitle {
+  border-bottom: 3px solid var(--lab-gold);
+  background: var(--lab-navy);
+}
+
+.panelTitle span,
+.panelTitle small {
+  color: #c8d9e8;
+}
+
+.panelTitle strong {
+  color: #fff;
+}
+
+.componentSearch {
+  border: 1px solid var(--lab-border);
+  background: #fff;
+}
+
+.componentSearch:focus-within {
+  border-color: var(--lab-gold);
+  box-shadow: 0 0 0 3px rgba(210, 166, 44, 0.18);
+}
+
+.componentSearch input {
+  color: var(--lab-text);
+}
+
+.libraryCategoryTabs button {
+  color: #35536f;
+  border-color: #b9cada;
+  background: #fff;
+}
+
+.libraryCategoryTabs .libraryCategoryActive {
+  color: #fff;
+  border-color: var(--lab-blue);
+  background: var(--lab-blue);
+  box-shadow: inset 0 -2px 0 var(--lab-gold);
+}
+
+.libraryComponent {
+  color: var(--lab-text);
+  border-color: #c7d5e2;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(11, 35, 69, 0.06);
+}
+
+.libraryComponent:hover {
+  border-color: var(--lab-gold);
+  background: var(--lab-gold-soft);
+  box-shadow: 0 7px 16px rgba(11, 35, 69, 0.15);
+}
+
+.libraryComponent strong {
+  color: var(--lab-navy);
+}
+
+.libraryComponent small {
+  color: #65798d;
+}
+
+.libraryComponent > button {
+  color: var(--lab-blue);
+  border-color: #b7c9da;
+}
+
+.libraryComponent > button:hover {
+  color: var(--lab-navy);
+  border-color: var(--lab-gold);
+  background: #f4cc5b;
+}
+
+.dragHint {
+  color: #526b84;
+  border-top-color: #b8c9d8;
+  background: #e9f1f8;
+}
+
+.workspacePanel,
+.workspaceViewport {
+  background: #dce7f0;
+}
+
+.workspaceHeader {
+  color: #d6e4f0;
+  border-bottom: 3px solid var(--lab-gold);
+  background: #12385f;
+}
+
+.workspaceHeader > div:first-child span {
+  color: #f4cc5b;
+}
+
+.workspaceHeader > div:first-child strong {
+  color: #fff;
+}
+
+.workspaceHeader i {
+  background: #e8bd45;
+}
+
+.workspaceStartButton {
+  color: #102c4c;
+  border-color: #9a7110;
+  background: linear-gradient(#f4d36f, #d2a62c);
+  box-shadow: 0 2px 5px rgba(7, 25, 47, 0.25);
+}
+
+.workspaceStartButton:hover:not(:disabled) {
+  background: linear-gradient(#ffe391, #dfb638);
+}
+
+.circuitCanvas {
+  color: var(--lab-text);
+  background-color: #f8fbfe;
+  background-image: radial-gradient(circle, rgba(22, 79, 134, 0.24) 1px, transparent 1.25px);
+}
+
+.workspaceEmpty {
+  color: #50677f;
+  border-color: #9fb7cc;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.workspaceEmpty > span,
+.workspaceEmpty strong {
+  color: var(--lab-blue);
+}
+
+.electricalComponent:hover,
+.electricalComponentSelected {
+  outline-color: var(--lab-gold);
+  background: rgba(255, 247, 220, 0.72);
+}
+
+.wireHitAreaSelected {
+  stroke: rgba(210, 166, 44, 0.25);
+}
+
+.wireControlHandleHalo {
+  fill: rgba(210, 166, 44, 0.25);
+}
+
+.wireControlHandle {
+  stroke: var(--lab-gold-dark);
+}
+
+.wireControlHandle:hover {
+  fill: #f4cc5b;
+}
+
+.wireHint {
+  color: #102c4c;
+  border-color: #9a7110;
+  background: rgba(244, 204, 91, 0.97);
+  box-shadow: 0 6px 16px rgba(11, 35, 69, 0.2);
+}
+
+.terminalActive i {
+  background: var(--lab-gold);
+  box-shadow: 0 0 0 3px rgba(210, 166, 44, 0.3), 0 0 8px var(--lab-gold);
+}
+
+.terminalConnected i {
+  background: var(--lab-blue-bright);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(36, 119, 181, 0.5);
+}
+
+.simulationControls {
+  border-top: 3px solid var(--lab-gold);
+  background: #f8fbfe;
+  box-shadow: 0 -5px 15px rgba(11, 35, 69, 0.1);
+}
+
+.checkButton {
+  border-color: #0b3159 !important;
+  background: var(--lab-blue);
+}
+
+.checkButton:hover {
+  background: var(--lab-navy);
+}
+
+.startButton {
+  color: #102c4c;
+  border-color: #9a7110 !important;
+  background: #e3b83d;
+}
+
+.resetButton {
+  color: var(--lab-navy);
+  border-color: #9fb5ca !important;
+  background: #fff;
+}
+
+.statusBar {
+  color: #d8e5ef;
+  border-top: 0;
+  background: var(--lab-navy);
+}
+
+.statusBar > div > span {
+  border-left-color: #365570;
+}
+
+.statusBar strong {
+  color: #f4cc5b;
+}
+
+.practicePage button:focus-visible,
+.practicePage input:focus-visible,
+.practicePage select:focus-visible {
+  outline: 3px solid rgba(210, 166, 44, 0.72);
+  outline-offset: 2px;
+}
+
+.componentItems,
+.workspaceViewport {
+  scrollbar-color: var(--lab-gold) #d8e4ee;
+  scrollbar-width: thin;
+}
+
+.componentItems::-webkit-scrollbar,
+.workspaceViewport::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.componentItems::-webkit-scrollbar-track,
+.workspaceViewport::-webkit-scrollbar-track {
+  background: #d8e4ee;
+}
+
+.componentItems::-webkit-scrollbar-thumb,
+.workspaceViewport::-webkit-scrollbar-thumb {
+  border: 2px solid #d8e4ee;
+  border-radius: 8px;
+  background: var(--lab-gold);
 }

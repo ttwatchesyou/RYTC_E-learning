@@ -7,21 +7,19 @@ interface TerminalProps {
   style: CSSProperties;
   active: boolean;
   connected: boolean;
-  onWireStart: (event: MouseEvent<HTMLButtonElement>) => void;
-  onWireEnd: (event: MouseEvent<HTMLButtonElement>) => void;
+  energized: boolean;
   onClick: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function Terminal({ terminal, style, active, connected, onWireStart, onWireEnd, onClick }: TerminalProps) {
+export default function Terminal({ terminal, style, active, connected, energized, onClick }: TerminalProps) {
   return (
     <button
       type="button"
       title={`${terminal.label} · ${terminal.kind}`}
       aria-label={`Terminal ${terminal.label}`}
-      className={`${styles.terminal} ${styles[`terminal${terminal.position}`]} ${styles[`terminalKind${terminal.kind}`]} ${active ? styles.terminalActive : ""} ${connected ? styles.terminalConnected : ""}`}
+      className={`${styles.terminal} ${styles[`terminal${terminal.position}`]} ${styles[`terminalKind${terminal.kind}`]} ${active ? styles.terminalActive : ""} ${connected ? styles.terminalConnected : ""} ${energized ? styles.terminalEnergized : ""}`}
       style={style}
-      onMouseDown={onWireStart}
-      onMouseUp={onWireEnd}
+      onMouseDown={(event) => event.stopPropagation()}
       onClick={onClick}
     >
       <i />

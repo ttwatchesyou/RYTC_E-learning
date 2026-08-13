@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import {
   HiOutlineArrowPath,
@@ -20,8 +20,8 @@ import type {
 } from "@/types/motorControl";
 import CircuitWorkspace from "./CircuitWorkspace";
 import ComponentLibrary from "./ComponentLibrary";
-import PropertiesPanel from "./PropertiesPanel";
 import SimulationControls from "./SimulationControls";
+import { getOperationReadiness, simulateCircuit } from "./circuitSimulation";
 import styles from "@/styles/MotorControl.module.css";
 
 type Snapshot = { placed: PlacedComponent[]; wires: WireConnection[] };
@@ -41,22 +41,11 @@ const wireColors = [
 const componentById = new Map(electricalComponents.map((item) => [item.id, item]));
 const componentByType = new Map(electricalComponents.map((item) => [item.type, item]));
 
-const runningState: Record<string, string> = {
-  breaker: "ON",
-  contactor: "ENERGIZED",
-  overload: "NORMAL",
-  motor: "RUNNING",
-  indicator: "ON",
-  relay: "ENERGIZED",
-  vfd: "RUN 35 Hz",
-  startButton: "PRESSED",
-};
-
 export default function PracticeLab() {
-  const [exerciseId, setExerciseId] = useState(exercises[0].id);
   const [placed, setPlaced] = useState<PlacedComponent[]>([]);
   const [wires, setWires] = useState<WireConnection[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
   const [mode, setMode] = useState<ToolMode>("select");
   const [wireColor, setWireColor] = useState<string>(wireColors[0].value);
   const [zoom, setZoom] = useState(1);
@@ -66,11 +55,10 @@ export default function PracticeLab() {
   const [isSimulating, setIsSimulating] = useState(false);
   const [undoStack, setUndoStack] = useState<Snapshot[]>([]);
   const [redoStack, setRedoStack] = useState<Snapshot[]>([]);
+  const [interactionNotice, setInteractionNotice] = useState("");
   const sequenceRef = useRef(0);
 
-  const exercise = exercises.find((item) => item.id === exerciseId) || exercises[0];
-  const selected = placed.find((item) => item.instanceId === selectedId) || null;
-  const selectedDefinition = selected ? componentById.get(selected.componentId) || null : null;
+  const exercise = exercises[0];
 
   const cancelPendingWire = () => {
     setPendingTerminal(null);
@@ -112,6 +100,12 @@ export default function PracticeLab() {
   };
 
   const deleteSelected = () => {
+    if (!selectedId && !selectedWireId) return;
+    if (selectedWireId) {
+      commit(placed, wires.filter((wire) => wire.id !== selectedWireId));
+      setSelectedWireId(null);
+      return;
+    }
     if (!selectedId) return;
     commit(
       placed.filter((item) => item.instanceId !== selectedId),
@@ -119,6 +113,33 @@ export default function PracticeLab() {
     );
     setSelectedId(null);
     cancelPendingWire();
+  };
+
+  const beginWireEdit = () => {
+    setUndoStack((stack) => [...stack.slice(-29), { placed, wires }]);
+    setRedoStack([]);
+    setValidation(null);
+    setIsSimulating(false);
+  };
+
+  const updateWirePoints = (wireId: string, points: WirePoint[]) => {
+    setWires((items) => items.map((wire) => wire.id === wireId ? { ...wire, points } : wire));
+  };
+
+  const chooseWireColor = (color: string) => {
+    setWireColor(color);
+    if (!selectedWireId) return;
+    const selectedWire = wires.find((wire) => wire.id === selectedWireId);
+    if (!selectedWire || selectedWire.color === color) return;
+    commit(placed, wires.map((wire) => wire.id === selectedWireId ? { ...wire, color } : wire));
+    setSelectedWireId(selectedWireId);
+  };
+
+  const selectWireForEditing = (wireId: string | null) => {
+    setSelectedWireId(wireId);
+    setSelectedId(null);
+    const selectedWire = wires.find((wire) => wire.id === wireId);
+    if (selectedWire) setWireColor(selectedWire.color);
   };
 
   const removeComponent = (instanceId: string) => {
@@ -129,6 +150,30 @@ export default function PracticeLab() {
     );
     if (selectedId === instanceId) setSelectedId(null);
     if (pendingTerminal?.instanceId === instanceId) cancelPendingWire();
+  };
+
+  const toggleComponentState = (instanceId: string) => {
+    const instance = placed.find((item) => item.instanceId === instanceId);
+    const definition = instance ? componentById.get(instance.componentId) : null;
+    if (!instance || !definition || definition.interactiveStates.length < 2) return;
+    const readiness = getOperationReadiness(instance, definition, wires);
+    if (readiness.circuitDriven) {
+      setInteractionNotice(`${definition.name} ทำงานจากไฟในวงจรเท่านั้น · ต่อสายให้ครบแล้วเริ่ม Simulation`);
+      return;
+    }
+    if (!readiness.canOperate) {
+      setInteractionNotice(`${definition.name} ยังใช้งานไม่ได้ · กรุณาต่อขั้ว ${readiness.missingTerminals.join(", ")} ให้ครบ`);
+      return;
+    }
+    setInteractionNotice("");
+    const currentIndex = definition.interactiveStates.indexOf(instance.state);
+    const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % definition.interactiveStates.length : 0;
+    setUndoStack((stack) => [...stack.slice(-29), { placed, wires }]);
+    setRedoStack([]);
+    setPlaced(placed.map((item) => item.instanceId === instanceId
+      ? { ...item, state: definition.interactiveStates[nextIndex] }
+      : item));
+    setSelectedId(instanceId);
   };
 
   const clearWorkspace = () => {
@@ -200,39 +245,6 @@ export default function PracticeLab() {
     setDraftWirePoints((points) => points.length < 240 ? [...points, point] : points);
   };
 
-  const loadRequired = () => {
-    const countOverrides: Record<string, Record<string, number>> = {
-      "forward-reverse": { contactor: 2 },
-      "star-delta": { contactor: 3 },
-    };
-    const desired = new Map<string, number>();
-    exercise.requiredComponents.forEach((type) => desired.set(type, Math.max(desired.get(type) || 0, 1)));
-    Object.entries(countOverrides[exercise.id] || {}).forEach(([type, count]) => desired.set(type, count));
-    const existingCounts = new Map<string, number>();
-    placed.forEach((instance) => {
-      const type = componentById.get(instance.componentId)?.type;
-      if (type) existingCounts.set(type, (existingCounts.get(type) || 0) + 1);
-    });
-    const additions: PlacedComponent[] = [];
-    Array.from(desired.entries()).forEach(([type, desiredCount]) => {
-      const definition = componentByType.get(type);
-      if (!definition) return;
-      const missing = Math.max(0, desiredCount - (existingCounts.get(type) || 0));
-      for (let index = 0; index < missing; index += 1) {
-        sequenceRef.current += 1;
-        const slot = placed.length + additions.length;
-        additions.push({
-          instanceId: `${type}-${Date.now()}-${sequenceRef.current}`,
-          componentId: definition.id,
-          x: 45 + (slot % 6) * 155,
-          y: 60 + Math.floor(slot / 6) * 145,
-          state: definition.defaultState,
-        });
-      }
-    });
-    if (additions.length) commit([...placed, ...additions], wires);
-  };
-
   const validateCircuit = () => {
     const placedTypes = placed.map((item) => componentById.get(item.componentId)?.type).filter(Boolean) as string[];
     const missingTypes = Array.from(new Set(exercise.requiredComponents.filter((type) => !placedTypes.includes(type))));
@@ -291,21 +303,11 @@ export default function PracticeLab() {
   };
 
   const startSimulation = () => {
-    const result = validation?.valid ? validation : validateCircuit();
-    if (!result.valid) return;
-    setPlaced((items) => items.map((item) => {
-      const type = componentById.get(item.componentId)?.type || "";
-      return { ...item, state: runningState[type] || item.state };
-    }));
+    validateCircuit();
     setIsSimulating(true);
   };
 
   const stopSimulation = () => {
-    setPlaced((items) => items.map((item) => {
-      const definition = componentById.get(item.componentId);
-      const stopStates: Record<string, string> = { contactor: "OFF", motor: "STOPPED", indicator: "OFF", relay: "OFF", vfd: "STOPPED", startButton: "RELEASED" };
-      return { ...item, state: stopStates[definition?.type || ""] || item.state };
-    }));
     setIsSimulating(false);
   };
 
@@ -316,19 +318,31 @@ export default function PracticeLab() {
     cancelPendingWire();
   };
 
-  const switchExercise = (id: string) => {
-    setExerciseId(id);
-    setValidation(null);
-    setIsSimulating(false);
-    cancelPendingWire();
-  };
+  useEffect(() => {
+    if (!interactionNotice) return;
+    const timeout = window.setTimeout(() => setInteractionNotice(""), 3500);
+    return () => window.clearTimeout(timeout);
+  }, [interactionNotice]);
+
+  const simulation = useMemo(
+    () => isSimulating
+      ? simulateCircuit(placed, wires, componentById)
+      : { states: new Map<string, string>(), energizedTerminals: new Set<string>(), energizedWires: new Set<string>() },
+    [isSimulating, placed, wires],
+  );
+  const displayedPlaced = useMemo(() => placed.map((instance) => ({
+    ...instance,
+    state: simulation.states.get(instance.instanceId) || instance.state,
+  })), [placed, simulation.states]);
 
   const statusText = useMemo(() => {
-    if (isSimulating) return "SIMULATION RUNNING · MOTOR LOGIC ACTIVE";
-    if (pendingTerminal) return `WIRE MODE · ${draftWirePoints.length} BEND POINTS · CLICK CANVAS OR DESTINATION TERMINAL`;
+    if (interactionNotice) return interactionNotice;
+    if (isSimulating) return `SIMULATION RUNNING · ${simulation.energizedWires.size} ENERGIZED WIRES`;
+    if (pendingTerminal) return `CONNECTING WIRE · ${draftWirePoints.length} BEND POINTS · CLICK CANVAS OR DESTINATION TERMINAL`;
+    if (selectedWireId) return "WIRE SELECTED · CHOOSE A COLOR ABOVE · DRAG BLUE HANDLES · DOUBLE-CLICK TO ADD A HANDLE";
     if (validation?.valid) return "CIRCUIT VALIDATED · READY TO SIMULATE";
     return "READY · SELECT A COMPONENT OR CHOOSE WIRE TOOL";
-  }, [draftWirePoints.length, isSimulating, pendingTerminal, validation]);
+  }, [draftWirePoints.length, interactionNotice, isSimulating, pendingTerminal, selectedWireId, simulation.energizedWires.size, validation]);
 
   return (
     <div className={styles.practicePage}>
@@ -337,16 +351,6 @@ export default function PracticeLab() {
           <span>VIRTUAL ELECTRICAL LAB</span>
           <h1>Motor Control Practice</h1>
         </div>
-        <label className={styles.exerciseSelector}>
-          <small>SELECT EXERCISE</small>
-          <select value={exerciseId} onChange={(event) => switchExercise(event.target.value)}>
-            {exercises.map((item) => <option value={item.id} key={item.id}>{String(item.number).padStart(2, "0")} · {item.title}</option>)}
-          </select>
-        </label>
-        <div className={styles.exerciseDifficulty}>
-          <small>DIFFICULTY</small>
-          <strong className={styles[`difficulty${exercise.difficulty}`]}>{exercise.difficulty.toUpperCase()}</strong>
-        </div>
       </section>
 
       <div className={styles.labToolbar}>
@@ -354,7 +358,7 @@ export default function PracticeLab() {
           <span>TOOLS</span>
           <button type="button" className={mode === "select" ? styles.toolActive : ""} onClick={() => { setMode("select"); cancelPendingWire(); }}><HiOutlineCursorArrowRays /> Select</button>
           <button type="button" className={mode === "wire" ? styles.toolActive : ""} onClick={() => setMode("wire")}><TbCircuitSwitchOpen /> Wire</button>
-          <button type="button" onClick={deleteSelected} disabled={!selectedId}><HiOutlineTrash /> Delete</button>
+          <button type="button" onClick={deleteSelected} disabled={!selectedId && !selectedWireId}><HiOutlineTrash /> Delete</button>
         </div>
         <span className={styles.toolbarDivider} />
         <div className={styles.wireColorGroup}>
@@ -368,7 +372,7 @@ export default function PracticeLab() {
                 aria-label={`เลือกสายไฟสี ${color.name}`}
                 aria-pressed={wireColor === color.value}
                 title={color.name}
-                onClick={() => setWireColor(color.value)}
+                onClick={() => chooseWireColor(color.value)}
                 key={color.value}
               />
             ))}
@@ -377,7 +381,7 @@ export default function PracticeLab() {
                 type="color"
                 value={wireColor}
                 aria-label="เลือกสีสายไฟเพิ่มเติม"
-                onChange={(event) => setWireColor(event.target.value)}
+                onChange={(event) => chooseWireColor(event.target.value)}
               />
               <span style={{ backgroundColor: wireColor }} />
             </label>
@@ -403,7 +407,7 @@ export default function PracticeLab() {
         <ComponentLibrary components={electricalComponents} onAdd={addComponent} onRemove={removeComponent} />
         <CircuitWorkspace
           components={electricalComponents}
-          placed={placed}
+          placed={displayedPlaced}
           wires={wires}
           selectedId={selectedId}
           mode={mode}
@@ -412,24 +416,24 @@ export default function PracticeLab() {
           pendingTerminal={pendingTerminal}
           draftWirePoints={draftWirePoints}
           onDropComponent={dropComponent}
-          onSelect={setSelectedId}
-          onTerminalWireStart={startWire}
-          onTerminalWireEnd={finishWire}
+          onSelect={(instanceId) => { setSelectedId(instanceId); if (instanceId) setSelectedWireId(null); }}
+          selectedWireId={selectedWireId}
+          onSelectWire={selectWireForEditing}
+          onBeginWireEdit={beginWireEdit}
+          onUpdateWirePoints={updateWirePoints}
+          onToggleComponent={toggleComponentState}
           onTerminalClick={handleTerminalClick}
           onAddWirePoint={addDraftWirePoint}
           onCancelWire={cancelPendingWire}
-        />
-        <PropertiesPanel
-          exercise={exercise}
-          selected={selected}
-          definition={selectedDefinition}
-          validation={validation}
-          onLoadRequired={loadRequired}
+          isSimulating={isSimulating}
+          onStartSimulation={startSimulation}
+          energizedTerminals={simulation.energizedTerminals}
+          energizedWires={simulation.energizedWires}
         />
       </div>
 
       <SimulationControls
-        canSimulate={Boolean(validation?.valid)}
+        canSimulate={placed.length > 0 && wires.length > 0}
         isSimulating={isSimulating}
         onCheck={validateCircuit}
         onStart={startSimulation}
@@ -438,7 +442,7 @@ export default function PracticeLab() {
       />
 
       <footer className={styles.statusBar}>
-        <span><i className={isSimulating ? styles.statusLive : ""} /> {statusText}</span>
+        <span className={interactionNotice ? styles.statusWarning : ""}><i className={!interactionNotice && isSimulating ? styles.statusLive : ""} /> {statusText}</span>
         <div>
           <span>COMPONENTS <strong>{placed.length}</strong></span>
           <span>WIRES <strong>{wires.length}</strong></span>
